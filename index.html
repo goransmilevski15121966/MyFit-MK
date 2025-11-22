@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyFit MK - Владо Смилевски - Планер за Тренинг</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="description" content="Твој предизвик - Твојата победа. Јак денес - појак утре.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .level-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+        }
+        .level-beginner { background-color: #d1fae5; color: #065f46; border-color: #34d399; }
+        .level-intermediate { background-color: #fef3c7; color: #b45309; border-color: #f59e0b; }
+        .level-advanced { background-color: #fee2e2; color: #991b1b; border-color: #f87171; }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-bottom: 3px solid transparent;
+            color: #4b5563;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .tab-btn:hover {
+            color: #4338ca;
+            transform: translateY(-2px);
+        }
+        .tab-btn.active-tab {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+        }
+
+        /* Advanced Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(79, 70, 229, 0.6); }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Exercise Animations */
+        @keyframes anim-squat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(20px) scale(1.1, 0.9); }
+        }
+        @keyframes anim-lift {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(-5deg); }
+        }
+        @keyframes anim-row {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            50% { transform: translateX(-15px) rotate(5deg); }
+        }
+        @keyframes anim-cardio {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            50% { transform: scale(1) rotate(0deg); }
+            75% { transform: scale(1.1) rotate(-5deg); }
+        }
+        @keyframes anim-core {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .exercise-anim-squat { animation: anim-squat 2s infinite ease-in-out; }
+        .exercise-anim-lift { animation: anim-lift 1.8s infinite ease-in-out; }
+        .exercise-anim-row { animation: anim-row 2.2s infinite ease-in-out; }
+        .exercise-anim-cardio { animation: anim-cardio 1.5s infinite ease-in-out; }
+        .exercise-anim-core { animation: anim-core 2s infinite ease-in-out; }
+
+        /* UI Animations */
+        .exercise-card {
+            transition: all 0.3s ease;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        .bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        /* Glass Morphism Effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        }
+
+        /* Shimmer Effect */
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Exercise Grid */
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Calendar Styles */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .calendar-day:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .calendar-day.selected {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #3730a3;
+        }
+        
+        .calendar-day.has-workout {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .calendar-day.other-month {
+            opacity: 0.4;
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .calendar-day-number {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .calendar-workout-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: white;
+            margin-top: 2px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .exercises-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar {
+                gap: 0.25rem;
+            }
+            
+            .calendar-day-number {
+                font-size: 0.9rem;
+            }
+            
+            .exercise-name {
+                font-size: 1.1rem;
+            }
+            
+            .english-name {
+                font-size: 0.9rem;
+            }
+        }
+        
+        .exercise-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1f2937;
+        }
+        
+        .english-name {
+            font-size: 1rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        
+        .explanation-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        
+        .explanation-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .exercise-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <!-- Animated Background Elements -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-40 -right-32 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-32 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
+        <div class="absolute top-40 left-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000"></div>
+    </div>
+
+    <div id="app" class="max-w-7xl mx-auto glass-effect rounded-3xl p-6 sm:p-8 border border-white/20 shadow-2xl relative overflow-hidden">
+        <!-- Shimmer Effect -->
+        <div class="absolute inset-0 shimmer opacity-20"></div>
+        
+        <!-- HEADER -->
+        <div class="mb-8 pb-6 border-b border-white/20">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-white flex items-center gap-3">
+                        <span class="floating-icon">💪</span>
+                        MyFit MK - Владо Смилевски
+                    </h1>
+                    <p class="mt-2 text-lg sm:text-xl text-white/80 font-semibold">
+                        Твој предизвик - Твојата победа. Јак денес - појак утре.
+                    </p>
+                </div>
+                <div class="hidden sm:block">
+                    <div class="text-right">
+                        <div class="text-white/60 text-sm">Активни вежби</div>
+                        <div class="text-2xl font-bold text-white" id="active-exercises">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div id="loading" class="text-center py-20">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto pulse-glow"></div>
+            <p class="mt-4 text-white text-lg">Вчитување на MyFit MK...</p>
+            <div class="mt-2 text-white/60 text-sm">Подготвуваме 140+ вежби за вас!</div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div id="app-content" style="display: none;">
+            <!-- TAB NAVIGATION -->
+            <div class="flex border-b border-white/20 mb-8 overflow-x-auto">
+                <button data-tab="planner" class="tab-btn active-tab whitespace-nowrap flex items-center gap-2">
+                    <span>📝</span>
+                    <span>Планер</span>
+                </button>
+                <button data-tab="exercises" class="tab-btn whitespace-nowrap flex items-center gap-2">
+                    <span>💪</span>
+                    <span>Вежби</span>
+                    <span class="bg-indigo-500 text-white text-xs rounded-full px-2 py-1" id="exercises-count">0</span>
+                </button>
+                <button data-tab="calendar" class="tab-btn whitespace-nowrap flex items-center gap-2">
+                    <span>📅</span>
+                    <span>Календар</span>
+                </button>
+                <button data-tab="favorites" class="tab-btn whitespace-nowrap flex items-center gap-2">
+                    <span>⭐</span>
+                    <span>Омилени</span>
+                    <span class="bg-yellow-500 text-white text-xs rounded-full px-2 py-1" id="favorites-count">0</span>
+                </button>
+            </div>
+
+            <!-- PLANNER TAB -->
+            <div data-tab-target="planner" class="tab-content active-content">
+                <div class="glass-card rounded-2xl p-6 mb-6 border border-white/20 bounce-in">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="text-3xl">📝</span>
+                        Креирај Нов Тренинг
+                    </h2>
+                    <div id="current-routine" class="min-h-[120px] p-4 bg-white/50 rounded-xl border-2 border-dashed border-indigo-200 mb-4 transition-all duration-300">
+                        <p class="text-gray-500 text-center py-8">🎯 Додај вежби од табот "Вежби" за да започнеш</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <input type="text" id="routine-name" placeholder="🦵 Име на тренинг (пр. Ден за Нозе)" 
+                               class="flex-1 p-4 border-2 border-indigo-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300">
+                        <button id="save-routine" class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg flex items-center gap-2">
+                            <span>💾</span>
+                            <span>Зачувај</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SAVED ROUTINES -->
+                <div id="saved-routines" class="glass-card rounded-2xl p-6 border border-white/20">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="text-3xl">📚</span>
+                        Зачувани Тренинзи
+                    </h2>
+                    <div id="routines-list" class="space-y-4">
+                        <p class="text-gray-500 text-center py-8">📝 Сè уште немате зачувано тренинзи</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCISES TAB -->
+            <div data-tab-target="exercises" class="tab-content hidden">
+                <div class="glass-card rounded-2xl p-6 mb-6 border border-white/20">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                            <span class="text-3xl">💪</span>
+                            Каталог на Вежби
+                            <span class="text-lg font-normal text-indigo-600" id="total-exercises">(0 вежби)</span>
+                        </h2>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            <select id="category-filter" class="p-3 border-2 border-indigo-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 bg-white/80">
+                                <option value="all">📂 Сите Категории</option>
+                                <option value="Нозе">🦵 Нозе</option>
+                                <option value="Грб">🎯 Грб</option>
+                                <option value="Гради">💪 Гради</option>
+                                <option value="Рамења">🆙 Рамења</option>
+                                <option value="Раце">💪 Раце</option>
+                                <option value="Стомак">🪵 Стомак</option>
+                                <option value="Кардио">🏃 Кардио</option>
+                                <option value="Функционални">🔄 Функционални</option>
+                                <option value="Истегнување">🧘 Истегнување</option>
+                            </select>
+                            <select id="level-filter" class="p-3 border-2 border-indigo-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 bg-white/80">
+                                <option value="all">🎯 Сите Нивоа</option>
+                                <option value="Почетник">🟢 Почетник</option>
+                                <option value="Среден">🟡 Среден</option>
+                                <option value="Напреден">🔴 Напреден</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- EXERCISES CONTAINER -->
+                    <div id="exercises-container" class="exercises-grid">
+                        <!-- Exercises will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALENDAR TAB -->
+            <div data-tab-target="calendar" class="tab-content hidden">
+                <div class="glass-card rounded-2xl p-6 mb-6 border border-white/20">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <span class="text-3xl">📅</span>
+                        Календар на Тренинзи
+                    </h2>
+                    
+                    <!-- Calendar Navigation -->
+                    <div class="flex justify-between items-center mb-6">
+                        <button id="prev-month" class="p-2 rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors">
+                            ◀ Претходен
+                        </button>
+                        <h3 id="current-month" class="text-xl font-bold text-gray-800">Декември 2023</h3>
+                        <button id="next-month" class="p-2 rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-colors">
+                            Следен ▶
+                        </button>
+                    </div>
+                    
+                    <!-- Calendar -->
+                    <div class="calendar-container mb-6">
+                        <div class="calendar-header">
+                            <div class="text-center font-semibold text-gray-600">Пон</div>
+                            <div class="text-center font-semibold text-gray-600">Вто</div>
+                            <div class="text-center font-semibold text-gray-600">Сре</div>
+                            <div class="text-center font-semibold text-gray-600">Чет</div>
+                            <div class="text-center font-semibold text-gray-600">Пет</div>
+                            <div class="text-center font-semibold text-gray-600">Саб</div>
+                            <div class="text-center font-semibold text-gray-600">Нед</div>
+                        </div>
+                        <div id="calendar" class="calendar">
+                            <!-- Calendar will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Day Workouts -->
+                    <div id="selected-day-workouts" class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4" id="selected-day-title">Изберете датум за да видите тренинзи</h3>
+                        <div id="day-workouts-list" class="space-y-3">
+                            <p class="text-gray-500 text-center py-4">📅 Изберете датум од календарот за да додадете тренинг</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Add Workout to Selected Day -->
+                    <div id="add-workout-section" class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-200" style="display: none;">
+                        <h3 class="text-lg font-semibold text-indigo-800 mb-3">Додај тренинг на избраниот ден</h3>
+                        <div class="flex gap-3">
+                            <select id="workout-select" class="flex-1 p-3 border-2 border-indigo-200 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 bg-white">
+                                <option value="">-- Изберете тренинг --</option>
+                            </select>
+                            <button id="add-workout-to-day" class="px-6 py-3 bg-indigo-500 text-white font-semibold rounded-xl hover:bg-indigo-600 transition-colors">
+                                Додај
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAVORITES TAB -->
+            <div data-tab-target="favorites" class="tab-content hidden">
+                <div class="glass-card rounded-2xl p-6 border border-white/20">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <span class="text-3xl">⭐</span>
+                        Мои Омилени Вежби
+                    </h2>
+                    <div id="favorites-list" class="space-y-4">
+                        <p class="text-gray-500 text-center py-12">
+                            <span class="text-4xl mb-4 block">🌟</span>
+                            Сè уште немате омилени вежби<br>
+                            <span class="text-sm text-gray-400">Кликнете на ⭐ покрај вежбите за да додадете</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // COMPREHENSIVE EXERCISE DATABASE WITH 140+ EXERCISES
+        const exercisesDatabase = {
+            "Нозе": [
+                { id: "barbell_squat", name: "Заден чучањ со шипка", englishName: "Barbell Back Squat", description: "Основна вежба за нозе со шипка на грб.", note: "Тешка тежина", level: "Напреден", sets: 4, reps: "5-8", animation: "exercise-anim-squat", explanation: "Ставете ја шипката на грбот, ставете ги нозете на ширина на рамењата, спуштете се додека колковите не се под нивото на колената, потоа вратете се во почетна положба." },
+                { id: "front_squat", name: "Преден чучањ", englishName: "Front Squat", description: "Шипката се држи пред рамената.", note: "Фокус на квадрицепси", level: "Напреден", sets: 3, reps: "8-10", animation: "exercise-anim-squat", explanation: "Држете ја шипката пред вас со крстосни раце или чист фат, спуштете се длабоко со исправен грб, фокусирајќи се на квадрицепсите." },
+                { id: "goblet_squat", name: "Гоблет чучањ", englishName: "Goblet Squat", description: "Држете тег пред градите.", note: "Добра за почетници", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-squat", explanation: "Држете тег вертикално со двете раце пред градите, спуштете се длабоко додека лактите не допрат до колената, вратете се нагоре." },
+                { id: "hack_squat", name: "Хек чучањ", englishName: "Hack Squat", description: "Машина за чучање.", note: "Контролирано движење", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Ставете ги рамењата под падините на машината, спуштете се контролирано, осигурајќи се дека колената не одат пред прстите." },
+                { id: "leg_press", name: "Лег прес", englishName: "Leg Press", description: "Машина за притискање со нозе.", note: "Без оптоварување на грб", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Седнате на машината, ставете ги нозете на платформата, исправете ги нозете без да ги заклучите колената, вратете се контролирано." },
+                { id: "bulgarian_split", name: "Бугарски чучњеви", englishName: "Bulgarian Split Squats", description: "Една нога на бенч.", note: "Стабилност", level: "Напреден", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Ставете ја задната нога на висока површина, спуштете се додека предното колено не е под агол од 90 степени, фокусирајќи се на стабилноста." },
+                { id: "lunges", name: "Исчекори", englishName: "Lunges", description: "Чекор напред со чучање.", note: "Баланс", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Направете голем чекор напред, спуштете се додека двете колена не се свиткани под агол од 90 степени, вратете се и повторете со друга нога." },
+                { id: "step_ups", name: "Чекори нагоре", englishName: "Step Ups", description: "Чекорење на платформа.", note: "Функционална сила", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-squat", explanation: "Ставете ја целата стапало на платформа, поттурнете се со предната нога за да се искачите, спуштете се контролирано." },
+                { id: "leg_extension", name: "Екстензија на нозе", englishName: "Leg Extension", description: "Машина за квадрицепси.", note: "Изолација", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-squat", explanation: "Седнате на машината, ставете ги подколениците под падините, исправете ги нозете, задржете ја контракцијата, вратете се контролирано." },
+                { id: "leg_curl", name: "Прегиб на нозе", englishName: "Leg Curl", description: "Машина за задна ложа.", note: "Хамстринзи", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Легнете на стомак на машината, ставете ги петите под падините, свијте ги нозете кон задникот, задржете ја контракцијата, вратете се контролирано." },
+                { id: "romanian_deadlift", name: "Романско мртво дигање", englishName: "Romanian Deadlift", description: "Хип хинге движење.", note: "Задна ложа", level: "Среден", sets: 4, reps: "8-12", animation: "exercise-anim-lift", explanation: "Држете тежина пред бедрата, свикајте ги малку колената, наведнете се напред од колковите, спуштете ја тежината по бедрата, вратете се со контракција на задницата." },
+                { id: "hip_thrust", name: "Потисок со колкови", englishName: "Hip Thrust", description: "Подигање на колковите.", note: "Глутеус", level: "Среден", sets: 4, reps: "10-15", animation: "exercise-anim-lift", explanation: "Седнате на под со грб потпрена на клупа, ставете тежина на колковите, подигнете ги колковите додека телото не е паралелно со подот, стегнете ја задницата." },
+                { id: "calf_raise", name: "Дигање на листови", englishName: "Calf Raise", description: "Подигање на прсти.", note: "Листови", level: "Почетник", sets: 4, reps: "15-20", animation: "exercise-anim-lift", explanation: "Ставете ги предните делови на стапалата на платформа, спуштете ги петите длабоко, подигнете се на прсти, стегнете ги листовите." },
+                { id: "sumo_squat", name: "Сумо чучањ", englishName: "Sumo Squat", description: "Широко поставени нозе.", note: "Внатрешни нозе", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-squat", explanation: "Ставете ги нозете многу широко, прстите насочени нанадвор, спуштете се длабоко, фокусирајќи се на внатрешните мускули на нозете." },
+                { id: "pistol_squat", name: "Пиштол чучањ", englishName: "Pistol Squat", description: "Чучање на една нога.", note: "Напредно", level: "Напреден", sets: 3, reps: "6-8", animation: "exercise-anim-squat", explanation: "Исправете се на една нога, исправете ја другата нога напред, спуштете се длабоко додека задникот не е близу до подот, вратете се со сила." },
+                { id: "box_jump", name: "Скок на кутија", englishName: "Box Jumps", description: "Експлозивни скокови.", note: "Плиометрика", level: "Напреден", sets: 4, reps: "8-10", animation: "exercise-anim-cardio", explanation: "Стојте пред кутија, замавете се со раце и скокнете со двете нозе на кутијата, слетајте мекно, слезете контролирано." },
+                { id: "wall_sit", name: "Седење на ѕид", englishName: "Wall Sit", description: "Статичко држење.", note: "Издржливост", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-squat", explanation: "Потпрете се на ѕид со грб, лизнете надолу додека колковите не се на ниво со колената, држете ја позицијата." },
+                { id: "curtsy_lunge", name: "Реверанс исчекор", englishName: "Curtsy Lunge", description: "Исчекор наназад.", note: "Глутеус", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Направете чекор наназад и настрана, како да се поклонувате, спуштете се длабоко, фокусирајќи се на страничните мускули на задницата." },
+                { id: "donkey_kick", name: "Магарешки удар", englishName: "Donkey Kick", description: "Удар со нога наназад.", note: "Глутеус", level: "Почетник", sets: 3, reps: "15-20", animation: "exercise-anim-lift", explanation: "Ставете се на шест точки, подигнете ја ногата наназад додека колкот не е паралелно со подот, стегнете ја задницата на врвот." },
+                { id: "fire_hydrant", name: "Противпожарен хидрат", englishName: "Fire Hydrant", description: "Подигање на нога настрана.", note: "Абдуктори", level: "Почетник", sets: 3, reps: "15-20", animation: "exercise-anim-lift", explanation: "Ставете се на шест точки, подигнете ја ногата настрана како кучето на противпожарен хидрат, вратете се контролирано." },
+                { id: "leg_press_single", name: "Лег прес со една нога", englishName: "Single Leg Press", description: "Притискање со една нога.", note: "Баланс и сила", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Користете една нога за притискање на платформата, одржувајќи контрола и баланс во текот на целото движење." },
+                { id: "sissy_squat", name: "Сиси чучањ", englishName: "Sissy Squat", description: "Чучање со навалување назад.", note: "Квадрицепси", level: "Напреден", sets: 3, reps: "8-12", animation: "exercise-anim-squat", explanation: "Држете се за потпора, навалете се назад додека колената се свиткуваат, чувствувајќи ја интензивната работа на квадрицепсите." },
+                { id: "nordic_curl", name: "Нордиски прегиб", englishName: "Nordic Curl", description: "Прегиб на нозе со партнер.", note: "Хамстринзи", level: "Напреден", sets: 3, reps: "6-8", animation: "exercise-anim-lift", explanation: "Клекнете со партнер кој ќе ги држи вашите пети, контролирано спуштете го телото напред, користете ги рацете за да се вратите." },
+                { id: "reverse_lunge", name: "Обратен исчекор", englishName: "Reverse Lunge", description: "Исчекор наназад.", note: "Стабилност", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-squat", explanation: "Направете чекор наназад, спуштете се додека двете колена не се свиткани под агол од 90 степени, вратете се и повторете." },
+                { id: "cossack_squat", name: "Козачко чучањ", englishName: "Cossack Squat", description: "Странично чучање.", note: "Флексибилност", level: "Среден", sets: 3, reps: "8-10", animation: "exercise-anim-squat", explanation: "Ставете ги нозете широко, спуштете се на една страна додека другата нога е исправена, чувствувајќи го истегнувањето во внатрешните мускули на нозете." }
+            ],
+            "Грб": [
+                { id: "deadlift", name: "Мртво дигање", englishName: "Deadlift", description: "Основна вежба за цело тело.", note: "Целосна сила", level: "Напреден", sets: 3, reps: "5", animation: "exercise-anim-lift", explanation: "Ставете се пред шипката со нозете на ширина на колковите, фатите ја шипката со алтернативен фат, исправете се со употреба на нозете и грбот, држете грбот исправен." },
+                { id: "barbell_row", name: "Веслање со шипка", englishName: "Barbell Row", description: "Веслање со шипка.", note: "Дебелина на грб", level: "Среден", sets: 3, reps: "8-10", animation: "exercise-anim-row", explanation: "Наведнете се напред со малку свиткани колена, држете ја шипката со широк фат, повлечете ја шипката кон долниот дел на градите, стегнете ги лопатките." },
+                { id: "pullups", name: "Згибови", englishName: "Pull-ups", description: "Влечење на шипка.", note: "Сопствена тежина", level: "Напреден", sets: 3, reps: "6-10", animation: "exercise-anim-lift", explanation: "Фатете ја шипката со широк фат, влечете се нагоре додека брадата не е над шипката, спуштете се целосно пред следното повторување." },
+                { id: "lat_pulldown", name: "Лат повлекување", englishName: "Lat Pulldown", description: "Влечење надолу.", note: "Ширина на грб", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Седнете на машината, фатете ја шипката со широк фат, повлечете ја шипката кон горниот дел на градите, стегнете ги латовите." },
+                { id: "tbar_row", name: "Т-веслање", englishName: "T-Bar Row", description: "Веслање на машина.", note: "Среден грб", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-row", explanation: "Ставете се на машината, фатете ги рачките, повлечете ги кон градите, фокусирајќи се на средниот дел на грбот." },
+                { id: "seated_row", name: "Седечки веслање", englishName: "Seated Row", description: "Веслање седечки.", note: "Среден грб", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-row", explanation: "Седнете на машината со исправен грб, повлечете ја рачката кон стомакот, стегнете ги лопатките заедно." },
+                { id: "single_arm_row", name: "Веслање со една рака", englishName: "Single-Arm Dumbbell Row", description: "Веслање со тег.", note: "Унилатерално", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-row", explanation: "Потпрете се со една рака и колено на клупа, повлечете го тегот нагоре кон градите, стегнете го грбот." },
+                { id: "face_pull", name: "Влечење кон лице", englishName: "Face Pull", description: "Влечење за задни рамења.", note: "Здравје на рамена", level: "Среден", sets: 3, reps: "15", animation: "exercise-anim-row", explanation: "Користете ја кабел машината со јаже, повлечете кон лицето, фокусирајќи се на задните делти и ротаторската манжетна." },
+                { id: "straight_arm_pulldown", name: "Повлекување со исправени раце", englishName: "Straight-Arm Pulldown", description: "Влечење со исправени раце.", note: "Латови", level: "Среден", sets: 3, reps: "15", animation: "exercise-anim-lift", explanation: "Стојте пред кабел машината, држете ја шипката со исправени раце, повлечете ја надолу кон бедрата, стегнете ги латовите." },
+                { id: "inverted_row", name: "Обратно веслање", englishName: "Inverted Row", description: "Веслање под шипка.", note: "Сопствена тежина", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-row", explanation: "Легнете под шипка, повлечете го телото нагоре додека градите не допрат до шипката, држете го телото исправено." },
+                { id: "rack_pull", name: "Дигање од рак", englishName: "Rack Pull", description: "Делумно мртво дигање.", note: "Горен грб", level: "Напреден", sets: 3, reps: "5-8", animation: "exercise-anim-lift", explanation: "Поставете ја шипката на рак на висина на колковите, фатите ја и исправете се, фокусирајќи се на горниот дел на движењето." },
+                { id: "good_morning", name: "Добро утро", englishName: "Good Morning", description: "Наведнување напред.", note: "Долен грб", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Ставете ја шипката на грбот, наведнете се напред од колковите додека трупот не е паралелно со подот, вратете се со контракција на долниот грб." },
+                { id: "hyperextension", name: "Хиперекстензија", englishName: "Hyperextension", description: "Екстензија на грб.", note: "Долен грб", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Легнете на машината со колковите на работ, спуштете го трупот надолу, потоа подигнете се со употреба на долниот грб." },
+                { id: "shrugs", name: "Слегање", englishName: "Shrugs", description: "Подигање на рамена.", note: "Трапез", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете тегови во раце, подигнете ги рамената кон ушите, задржете ја контракцијата, спуштете ги контролирано." },
+                { id: "pullover", name: "Преку глава", englishName: "Pullover", description: "Истегнување на латови.", note: "Растегнување", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на клупа со тег над градите, спуштете го тегот назад зад главата, чувствувајќи го истегнувањето на латовите, вратете го над градите." },
+                { id: "chin_ups", name: "Згибови со супиниран фат", englishName: "Chin-ups", description: "Згибови со дланки кон себе.", note: "Бицепс и грб", level: "Напреден", sets: 3, reps: "6-10", animation: "exercise-anim-lift", explanation: "Фатете ја шипката со дланките кон себе, влечете се нагоре додека брадата не е над шипката, фокусирајќи се на бицепсите и грбот." },
+                { id: "meadows_row", name: "Веслање по Медоуз", englishName: "Meadows Row", description: "Веслање со еден крај на шипката.", note: "Напредно", level: "Напреден", sets: 3, reps: "8-12", animation: "exercise-anim-row", explanation: "Фатете го едниот крај на шипката, повлечете кон страната на стомакот, фокусирајќи се на унилатералното развивање на грбот." },
+                { id: "landmine_row", name: "Веслање со ландмајн", englishName: "Landmine Row", description: "Веслање со шипка во агол.", note: "Уникатен агол", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-row", explanation: "Ставете го едниот крај на шипката во агол, повлечете кон градите, користејќи го уникатниот агол за да го нагласите средниот грб." },
+                { id: "kroc_row", name: "Крок веслање", englishName: "Kroc Row", description: "Веслање со висока тежина.", note: "Висок репс", level: "Напреден", sets: 3, reps: "15-20", animation: "exercise-anim-row", explanation: "Користете тешка тежина за веслање со една рака, дозволувајќи му на телото да се ротира за да помогне во движењето." },
+                { id: "cable_pullover", name: "Преку глава на кабл", englishName: "Cable Pullover", description: "Истегнување на латови на кабл.", note: "Константна тензија", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Стојте пред кабел машината, повлечете го јажето надолу кон бедрата, чувствувајќи ја константната тензија на латовите." },
+                { id: "reverse_grip_pulldown", name: "Повлекување со обратен фат", englishName: "Reverse Grip Pulldown", description: "Влечење со дланки кон себе.", note: "Долен грб", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на машината, фатете ја шипката со дланките кон себе, повлечете кон долниот дел на градите, фокусирајќи се на долниот грб." },
+                { id: "straight_leg_deadlift", name: "Мртво дигање со исправени нозе", englishName: "Straight Leg Deadlift", description: "Хип хинге со исправени нозе.", note: "Задна ложа", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Држете тежина пред бедрата, задржувајќи ги нозете исправени, наведнете се напред од колковите, чувствувајќи го истегнувањето на задната ложа." },
+                { id: "bent_over_barbell_row", name: "Наведнато веслање со шипка", englishName: "Bent Over Barbell Row", description: "Веслање со шипка наведнато.", note: "Среден грб", level: "Среден", sets: 3, reps: "8-12", animation: "exercise-anim-row", explanation: "Наведнете се напред со исправен грб, повлечете ја шипката кон долниот дел на градите, стегнете ги лопатките заедно." },
+                { id: "cable_row", name: "Веслање на кабл", englishName: "Cable Row", description: "Веслање на кабел машина.", note: "Константна тензија", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-row", explanation: "Седнете на кабел машината, повлечете ја рачката кон стомакот, одржувајќи константна тензија на грбот во текот на целото движење." },
+                { id: "wide_grip_pulldown", name: "Повлекување со широк фат", englishName: "Wide Grip Pulldown", description: "Влечење со широк фат.", note: "Ширина на грб", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на машината, фатете ја шипката со многу широк фат, повлечете кон горниот дел на градите, фокусирајќи се на ширината на грбот." }
+            ],
+            "Гради": [
+                { id: "bench_press", name: "Потисок на клупа", englishName: "Bench Press", description: "Основна вежба за гради.", note: "Гради и трицепс", level: "Среден", sets: 4, reps: "5-8", animation: "exercise-anim-lift", explanation: "Легнете на клупа, ставете ги стапалата на подот, спуштете ја шипката до долниот дел на градите, потиснете ја нагоре до целосно исправени раце." },
+                { id: "incline_bench", name: "Косен потисок", englishName: "Incline Bench Press", description: "Потисок на коса клупа.", note: "Горни гради", level: "Среден", sets: 3, reps: "8-12", animation: "exercise-anim-lift", explanation: "Легнете на коса клупа, спуштете ја шипката до горниот дел на градите, потиснете ја нагоре, фокусирајќи се на горните мускули на градите." },
+                { id: "decline_bench", name: "Обратно косен потисок", englishName: "Decline Bench Press", description: "Потисок на обратно коса клупа.", note: "Долни гради", level: "Среден", sets: 3, reps: "8-12", animation: "exercise-anim-lift", explanation: "Легнете на обратно коса клупа, спуштете ја шипката до долниот дел на градите, потиснете ја нагоре, фокусирајќи се на долните мускули на градите." },
+                { id: "dumbbell_press", name: "Потисок со тегови", englishName: "Dumbbell Press", description: "Потисок со тегови.", note: "Поголем опсег", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на клупа со тегови во раце, спуштете ги теговите до страните на градите, потиснете ги нагоре до целосно исправени раце." },
+                { id: "dumbbell_fly", name: "Летови со тегови", englishName: "Dumbbell Fly", description: "Отварање со тегови.", note: "Истегнување", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Легнете на клупа со тегови над градите, отворете ги рацете настрана додека не почувствувате истегнување во градите, вратете ги заедно." },
+                { id: "cable_crossover", name: "Кабл кроси", englishName: "Cable Crossover", description: "Вкрстување на кабли.", note: "Внатрешни гради", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Стојте помеѓу две кабел машини, повлечете ги рацете заедно пред вас, вкрстувајќи ги, стегнете ги градите." },
+                { id: "pushups", name: "Склекови", englishName: "Push-ups", description: "Основна вежба со сопствена тежина.", note: "Функционална сила", level: "Почетник", sets: 3, reps: "10-15", animation: "exercise-anim-lift", explanation: "Ставете се во положба на склек, спуштете го телото кон подот додека градите не се близу до подот, потиснете се нагоре." },
+                { id: "dips", name: "Пропаѓања", englishName: "Dips", description: "Пропаѓање помеѓу клупи.", note: "Гради и трицепс", level: "Среден", sets: 3, reps: "8-12", animation: "exercise-anim-lift", explanation: "Држете се на паралелки, спуштете го телото надолу додека лактите не се свиткани под 90 степени, потиснете се нагоре." },
+                { id: "pec_deck", name: "Пек дек", englishName: "Pec Deck", description: "Машина за гради.", note: "Изолација", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Седнете на машината, повлечете ги рацете заедно пред вас, стегнете ги градите, вратете се контролирано." },
+                { id: "chest_press_machine", name: "Потисок на машина", englishName: "Chest Press Machine", description: "Потисок на машина за гради.", note: "Стабилност", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на машината, потиснете ги рачките напред, стегнете ги градите, вратете се контролирано." },
+                { id: "incline_dumbbell_press", name: "Косен потисок со тегови", englishName: "Incline Dumbbell Press", description: "Потисок на коса клупа со тегови.", note: "Горни гради", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на коса клупа со тегови, спуштете ги до горниот дел на градите, потиснете ги нагоре." },
+                { id: "decline_dumbbell_press", name: "Обратно косен потисок со тегови", englishName: "Decline Dumbbell Press", description: "Потисок на обратно коса клупа со тегови.", note: "Долни гради", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на обратно коса клупа со тегови, спуштете ги до долниот дел на градите, потиснете ги нагоре." },
+                { id: "incline_dumbbell_fly", name: "Косни летови", englishName: "Incline Dumbbell Fly", description: "Летови на коса клупа.", note: "Горни гради", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Легнете на коса клупа, отворете ги рацете настрана, чувствувајќи го истегнувањето на горните гради, вратете ги заедно." },
+                { id: "decline_dumbbell_fly", name: "Обратно косни летови", englishName: "Decline Dumbbell Fly", description: "Летови на обратно коса клупа.", note: "Долни гради", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Легнете на обратно коса клупа, отворете ги рацете настрана, чувствувајќи го истегнувањето на долните гради, вратете ги заедно." },
+                { id: "cable_fly", name: "Летови на кабл", englishName: "Cable Fly", description: "Летови на кабл машина.", note: "Константна тензија", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Стојте помеѓу две кабел машини, повлечете ги рацете заедно пред вас, чувствувајќи ја константната тензија на градите." },
+                { id: "pushup_variations", name: "Варијации на склекови", englishName: "Push-up Variations", description: "Различни типови на склекови.", note: "Разновидност", level: "Среден", sets: 3, reps: "10-15", animation: "exercise-anim-lift", explanation: "Изведете различни варијации на склекови (широки, тесни, со подигање на нога, итн.) за да ги нападнете градите од различни агли." },
+                { id: "guillotine_press", name: "Потисок гилотина", englishName: "Guillotine Press", description: "Потисок со шипка до вратот.", note: "Напредно", level: "Напреден", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Легнете на клупа, спуштете ја шипката до вратот, чувствувајќи го интензивното истегнување на градите, потиснете ја нагоре." },
+                { id: "spoto_press", name: "Потисок по Спoto", englishName: "Spoto Press", description: "Потисок со пауза.", note: "Контрола", level: "Напреден", sets: 3, reps: "6-8", animation: "exercise-anim-lift", explanation: "Изведете потисок со пауза на средината на движењето, одржувајќи ја тензијата на градите во текот на целата вежба." },
+                { id: "floor_press", name: "Потисок на под", englishName: "Floor Press", description: "Потисок лежејќи на под.", note: "Краток опсег", level: "Среден", sets: 3, reps: "8-12", animation: "exercise-anim-lift", explanation: "Легнете на под со шипка, спуштете ја додека лактите не допрат до подот, потиснете ја нагоре." },
+                { id: "weighted_dips", name: "Пропаѓања со тежина", englishName: "Weighted Dips", description: "Пропаѓања со додадена тежина.", note: "Напредно", level: "Напреден", sets: 3, reps: "6-10", animation: "exercise-anim-lift", explanation: "Додадете дополнителна тежина додека ги изведувате пропаѓањата за да ја зголемите тежината на вежбата." },
+                { id: "cable_press", name: "Потисок на кабл", englishName: "Cable Press", description: "Потисок на кабел машина.", note: "Константна тензија", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Користете кабел машина за потисок, одржувајќи константна тензија на градите во текот на целото движење." },
+                { id: "wide_grip_bench", name: "Потисок со широк фат", englishName: "Wide Grip Bench Press", description: "Потисок со широко поставени раце.", note: "Надворешни гради", level: "Среден", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Легнете на клупа, ставете ги рацете пошироко од рамењата, спуштете ја шипката до градите, потиснете ја нагоре." },
+                { id: "close_grip_bench", name: "Потисок со тесен фат", englishName: "Close Grip Bench Press", description: "Потисок со тесно поставени раце.", note: "Трицепс и внатрешни гради", level: "Среден", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Легнете на клупа, ставете ги рацете потесно од рамењата, спуштете ја шипката до долниот дел на градите, потиснете ја нагоре." },
+                { id: "machine_fly", name: "Летови на машина", englishName: "Machine Fly", description: "Летови на специјална машина.", note: "Изолација", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Седнете на машината, повлечете ги рацете заедно пред вас, стегнете ги градите, вратете се контролирано." },
+                { id: "svend_press", name: "Свенд потисок", englishName: "Svend Press", description: "Потисок со плоча.", note: "Внатрешни гради", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете тешка плоча пред градите, потиснете ја напред, стегнувајќи ги внатрешните делови на градите." }
+            ],
+            "Рамења": [
+                { id: "overhead_press", name: "Потисок над глава", englishName: "Overhead Press", description: "Потисок со шипка над глава.", note: "Целосни рамења", level: "Среден", sets: 4, reps: "6-8", animation: "exercise-anim-lift", explanation: "Држете ја шипката на предните делти, потиснете ја над главата до целосно исправени раце, спуштете ја контролирано." },
+                { id: "arnold_press", name: "Арнолд прес", englishName: "Arnold Press", description: "Потисок со ротација.", note: "Целосен опсег", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Започнете со тегови пред рамењата со дланките кон себе, потиснете ги нагоре додека ротирате дланките нанадвор." },
+                { id: "lateral_raise", name: "Странични дигања", englishName: "Lateral Raise", description: "Дигање на страна.", note: "Средни делти", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете тегови во раце, подигнете ги рацете настрана до висина на рамењата, спуштете ги контролирано." },
+                { id: "front_raise", name: "Предни дигања", englishName: "Front Raise", description: "Дигање напред.", note: "Предни делти", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете тегови во раце, подигнете ги рацете напред до висина на рамењата, спуштете ги контролирано." },
+                { id: "rear_delt_fly", name: "Задни летови", englishName: "Rear Delt Fly", description: "Летови за задни делти.", note: "Задни делти", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Наведнете се напред, подигнете ги теговите настрана, фокусирајќи се на задните делти." },
+                { id: "upright_row", name: "Усправно веслање", englishName: "Upright Row", description: "Влечење нагоре.", note: "Трапез и делти", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Држете шипка или тегови пред бедрата, повлечете ги нагоре кон брадата, лактите насочени нагоре." },
+                { id: "face_pull", name: "Влечење кон лице", englishName: "Face Pull", description: "Влечење за задни делти.", note: "Здравје на рамена", level: "Среден", sets: 3, reps: "15", animation: "exercise-anim-row", explanation: "Користете ја кабел машината со јаже, повлечете кон лицето, фокусирајќи се на задните делти и ротаторската манжетна." },
+                { id: "dumbbell_press", name: "Потисок со тегови", englishName: "Dumbbell Press", description: "Потисок со тегови седечки.", note: "Стабилност", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на клупа со тегови на рамењата, потиснете ги нагоре до целосно исправени раце, спуштете ги контролирано." },
+                { id: "push_press", name: "Потисок со нозе", englishName: "Push Press", description: "Потисок со помош на нозе.", note: "Експлозивност", level: "Напреден", sets: 4, reps: "5-8", animation: "exercise-anim-lift", explanation: "Користете ги нозете за да генерирате моментум, потиснете ја тежината над главата." },
+                { id: "cable_lateral_raise", name: "Странични дигања на кабл", englishName: "Cable Lateral Raise", description: "Дигања на страна на кабл.", note: "Константна тензија", level: "Среден", sets: 3, reps: "15", animation: "exercise-anim-lift", explanation: "Користете кабел машина за дигања на страна, одржувајќи константна тензија на средните делти." },
+                { id: "bent_over_lateral_raise", name: "Наведнати странични дигања", englishName: "Bent Over Lateral Raise", description: "Дигања на страна наведнато.", note: "Задни делти", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Наведнете се напред, подигнете ги теговите настрана, фокусирајќи се на задните делти." },
+                { id: "single_arm_lateral_raise", name: "Странични дигања со една рака", englishName: "Single Arm Lateral Raise", description: "Дигања на страна со една рака.", note: "Концентрација", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Изведете дигања на страна со една рака, фокусирајќи се на совршена форма и контракција." },
+                { id: "machine_shoulder_press", name: "Потисок на машина", englishName: "Machine Shoulder Press", description: "Потисок на машина за рамења.", note: "Стабилност", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на машината, потиснете ги рачките нагоре, стегнете ги рамењата, вратете се контролирано." },
+                { id: "landmine_press", name: "Потисок со ландмајн", englishName: "Landmine Press", description: "Потисок со шипка во агол.", note: "Природно движење", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Користете ландмајн поставка за потисок, користејќи го уникатниот агол за да го нападнете предниот делтоид." },
+                { id: "cuban_press", name: "Кубански потисок", englishName: "Cuban Press", description: "Комбинација на ротации и потисок.", note: "Ротаторска манжетна", level: "Напреден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Комбинирајте ги надворешните ротации на рамењата со потисок над главата за здравствена вежба." },
+                { id: "handstand_pushup", name: "Склек на раце", englishName: "Handstand Push-up", description: "Склек во рачно стоење.", note: "Напредно", level: "Напреден", sets: 3, reps: "5-8", animation: "exercise-anim-lift", explanation: "Ставете се во рачно стоење потпрено на ѕид, спуштете ја главата кон подот, потиснете се нагоре." },
+                { id: "scaption_raise", name: "Дигање во скапција", englishName: "Scaption Raise", description: "Дигање под агол.", note: "Надгребенска коска", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Подигнете ги теговите под агол од 45 степени, фокусирајќи се на надгребенската коска." },
+                { id: "plate_front_raise", name: "Предни дигања со плоча", englishName: "Plate Front Raise", description: "Дигање напред со тег.", note: "Стабилност", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете тешка плоча со двете раце, подигнете ја напред до висина на рамењата." },
+                { id: "reverse_pec_deck", name: "Обратен пек дек", englishName: "Reverse Pec Deck", description: "Обратни летови на машина.", note: "Задни делти", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Седнете на машината обратно, повлечете ги рацете наназад, стегнете ги задните делти." },
+                { id: "barbell_shrug", name: "Слегање со шипка", englishName: "Barbell Shrug", description: "Подигање на рамена со шипка.", note: "Трапез", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете шипка пред бедрата, подигнете ги рамената кон ушите, стегнете го трапезниот мускул." },
+                { id: "dumbbell_shrug", name: "Слегање со тегови", englishName: "Dumbbell Shrug", description: "Подигање на рамена со тегови.", note: "Трапез", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете тегови во раце, подигнете ги рамената кон ушите, стегнете го трапезниот мускул." },
+                { id: "behind_neck_press", name: "Потисок зад вратот", englishName: "Behind Neck Press", description: "Потисок со шипка зад вратот.", note: "Напредно", level: "Напреден", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Држете ја шипката зад вратот, потиснете ја нагоре, внимавајќи на флексибилноста на рамењата." },
+                { id: "seated_dumbbell_press", name: "Седечки потисок со тегови", englishName: "Seated Dumbbell Press", description: "Потисок со тегови седечки.", note: "Стабилност", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на клупа со поддршка за грб, потиснете ги теговите нагоре, одржувајќи стабилност." },
+                { id: "standing_barbell_press", name: "Стоечки потисок со шипка", englishName: "Standing Barbell Press", description: "Потисок со шипка стоечки.", note: "Функционална сила", level: "Среден", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Стојте со шипка на предните делти, потиснете ја нагоре, одржувајќи ја стабилноста на трупот." }
+            ],
+            "Раце": [
+                { id: "barbell_curl", name: "Прегиб со шипка", englishName: "Barbell Curl", description: "Прегиб за бицепс со шипка.", note: "Основна вежба", level: "Почетник", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Држете ја шипката со дланките нанадвор, свијте ги лактите, подигнете ја шипката кон градите, стегнете ги бицепсите, спуштете ја контролирано." },
+                { id: "dumbbell_curl", name: "Прегиб со тегови", englishName: "Dumbbell Curl", description: "Прегиб за бицепс со тегови.", note: "Унилатерално", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Држете тегови во раце, свијте ги лактите, подигнете ги теговите кон рамењата, стегнете ги бицепсите." },
+                { id: "hammer_curl", name: "Чеканов прегиб", englishName: "Hammer Curl", description: "Прегиб со неутрален фат.", note: "Брахиалис", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Држете тегови со дланките насочени една кон друга, свијте ги лактите, подигнете ги теговите кон рамењата." },
+                { id: "preacher_curl", name: "Прегиб на клупа", englishName: "Preacher Curl", description: "Прегиб на специјална клупа.", note: "Изолација", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на клупата за прегиб, ставете ги подлактиците на падините, изведете прегиб со тег или шипка." },
+                { id: "concentration_curl", name: "Концентрационен прегиб", englishName: "Concentration Curl", description: "Прегиб со потпора.", note: "Врвна контракција", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на клупа, потпрете ја раката на колено, изведете прегиб со тег, фокусирајќи се на врвната контракција." },
+                { id: "cable_curl", name: "Прегиб на кабл", englishName: "Cable Curl", description: "Прегиб на кабл машина.", note: "Константна тензија", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Користете кабел машина за прегиб, одржувајќи константна тензија на бицепсите." },
+                { id: "tricep_pushdown", name: "Потискање за трицепс", englishName: "Tricep Pushdown", description: "Потискање надолу на кабл.", note: "Странична глава", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Стојте пред кабел машината, потиснете ја шипката надолу кон бедрата, стегнете го трицепсот." },
+                { id: "skull_crusher", name: "Скул крашер", englishName: "Skull Crusher", description: "Екстензија за трицепс.", note: "Долга глава", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на клупа со тег над градите, спуштете го тегот назад кон челото, исправете ги рацете." },
+                { id: "tricep_dips", name: "Пропаѓања за трицепс", englishName: "Tricep Dips", description: "Пропаѓања за трицепс.", note: "Сопствена тежина", level: "Среден", sets: 3, reps: "8-12", animation: "exercise-anim-lift", explanation: "Држете се на паралелки, спуштете го телото надолу, фокусирајќи се на работата на трицепсот." },
+                { id: "close_grip_bench", name: "Потисок со тесен фат", englishName: "Close Grip Bench Press", description: "Потисок со тесен фат.", note: "Трицепс и гради", level: "Среден", sets: 3, reps: "8-10", animation: "exercise-anim-lift", explanation: "Легнете на клупа, ставете ги рацете потесно од рамењата, спуштете ја шипката до долниот дел на градите, потиснете ја нагоре." },
+                { id: "overhead_tricep", name: "Екстензија над глава", englishName: "Overhead Tricep Extension", description: "Екстензија за трицепс над глава.", note: "Долга глава", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете или стојте со тег над главата, спуштете го тегот зад главата, исправете ги рацете." },
+                { id: "tricep_kickback", name: "Трицепс кикбек", englishName: "Tricep Kickback", description: "Екстензија наназад.", note: "Изолација", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Наведнете се напред, повлечете ја раката наназад, исправете ја раката, стегнете го трицепсот." },
+                { id: "reverse_curl", name: "Обратен прегиб", englishName: "Reverse Curl", description: "Прегиб со обратен фат.", note: "Подлактица", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Држете шипка со обратен фат, изведете прегиб, фокусирајќи се на мускулите на подлактицата." },
+                { id: "zottman_curl", name: "Цотман прегиб", englishName: "Zottman Curl", description: "Прегиб со ротација.", note: "Целосна подлактица", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Изведете прегиб со дланките нанадвор, на врвот ротирајте ги дланките надолу, спуштете ги теговите со обратен фат." },
+                { id: "spider_curl", name: "Пајаков прегиб", englishName: "Spider Curl", description: "Прегиб на коса клупа.", note: "Врвна контракција", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на стомак на коса клупа, изведете прегиб со тегови, чувствувајќи ја интензивната контракција на бицепсите." },
+                { id: "incline_curl", name: "Косен прегиб", englishName: "Incline Curl", description: "Прегиб на коса клупа.", note: "Истегнување", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Седнете на коса клупа, изведете прегиб со тегови, чувствувајќи го истегнувањето на бицепсите." },
+                { id: "rope_pushdown", name: "Потискање со јаже", englishName: "Rope Pushdown", description: "Потискање со јаже за трицепс.", note: "Средна глава", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Користете јаже на кабел машината, потиснете надолу, раздвојувајќи ги краевите на јажето на дното." },
+                { id: "diamond_pushup", name: "Дијамантски склек", englishName: "Diamond Push-up", description: "Склек со тесен фат.", note: "Трицепс", level: "Среден", sets: 3, reps: "10-15", animation: "exercise-anim-lift", explanation: "Ставете ги рацете заедно под градите, формирајќи дијамант, изведете склек, фокусирајќи се на трицепсот." },
+                { id: "lying_tricep", name: "Лежечка екстензија", englishName: "Lying Tricep Extension", description: "Екстензија лежејќи.", note: "Долга глава", level: "Среден", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Легнете на клупа со тег над градите, спуштете го тегот назад кон челото, исправете ги рацете." },
+                { id: "cable_kickback", name: "Кикбек на кабл", englishName: "Cable Kickback", description: "Кикбек на кабл машина.", note: "Константна тензија", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Користете кабел машина за кикбек, одржувајќи константна тензија на трицепсот." },
+                { id: "ez_bar_curl", name: "Прегиб со EZ шипка", englishName: "EZ Bar Curl", description: "Прегиб со EZ шипка.", note: "Здравје на зглобови", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-lift", explanation: "Користете EZ шипка за прегиб, што е поповолна за зглобовите на рацете." },
+                { id: "reverse_grip_pushdown", name: "Потискање со обратен фат", englishName: "Reverse Grip Pushdown", description: "Потискање со дланки нагоре.", note: "Медијална глава", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Користете обратен фат на кабел машината, потиснете надолу, фокусирајќи се на медијалната глава на трицепсот." },
+                { id: "21s", name: "21-ки", englishName: "21s", description: "Комбинација од три дела на прегиб.", note: "Исцрпување", level: "Среден", sets: 3, reps: "21", animation: "exercise-anim-lift", explanation: "Изведете 7 повторувања од дното до средината, 7 од средината до врвот, и 7 целосни прегиби." },
+                { id: "cable_hammer_curl", name: "Чеканов прегиб на кабл", englishName: "Cable Hammer Curl", description: "Чеканов прегиб на кабл.", note: "Константна тензија", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-lift", explanation: "Користете кабел машина за чеканов прегиб, одржувајќи константна тензија на брахиалисот." }
+            ],
+            "Стомак": [
+                { id: "crunches", name: "Трбушњаци", englishName: "Crunches", description: "Основна вежба за стомак.", note: "Горен стомак", level: "Почетник", sets: 3, reps: "15-20", animation: "exercise-anim-core", explanation: "Легнете на грб со свиткани колена, подигнете го горниот дел од телото кон колената, стегнете ги трбушните мускули, спуштете се контролирано." },
+                { id: "leg_raises", name: "Подигање на нозе", englishName: "Leg Raises", description: "Подигање на нозе лежејќи.", note: "Долен стомак", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-core", explanation: "Легнете на грб, подигнете ги нозете нагоре додека не се нормални на подот, спуштете ги контролирано." },
+                { id: "plank", name: "Планк", englishName: "Plank", description: "Статичко држење.", note: "Јадро", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Ставете се во положба на склек на подлактици, држете го телото исправено, стегнете ги трбушните мускули." },
+                { id: "russian_twist", name: "Руски свртувања", englishName: "Russian Twist", description: "Ротација на трупот.", note: "Страничен стомак", level: "Среден", sets: 3, reps: "20-30", animation: "exercise-anim-core", explanation: "Седнете на под со свиткани колена, ротирајте го трупот од една на друга страна, држејќи тежина." },
+                { id: "mountain_climbers", name: "Планинари", englishName: "Mountain Climbers", description: "Алтернативно повлекување на нозе.", note: "Кардио и јадро", level: "Среден", sets: 3, reps: "30s", animation: "exercise-anim-cardio", explanation: "Ставете се во положба на склек, алтернативно повлекувајте ги колената кон градите." },
+                { id: "bicycle_crunches", name: "Велосипед", englishName: "Bicycle Crunches", description: "Алтернативни трбушњаци.", note: "Страничен стомак", level: "Почетник", sets: 3, reps: "20-30", animation: "exercise-anim-core", explanation: "Легнете на грб, симулирајте педаличање со нозете, допирајќи го лактот до спротивното колено." },
+                { id: "hanging_leg_raise", name: "Висечко подигање", englishName: "Hanging Leg Raise", description: "Подигање на нозе висејќи.", note: "Долен стомак", level: "Напреден", sets: 3, reps: "10-15", animation: "exercise-anim-core", explanation: "Висејќи од шипка, подигнете ги нозете нагоре додека не се паралелни со подот, спуштете ги контролирано." },
+                { id: "ab_roller", name: "Тркало за стомак", englishName: "Ab Roller", description: "Тркалање напред и назад.", note: "Цело јадро", level: "Напреден", sets: 3, reps: "8-12", animation: "exercise-anim-core", explanation: "Клекнете, тркалајте го тркалото напред додека не почувствувате истегнување во стомакот, вратете се." },
+                { id: "side_plank", name: "Страничен планк", englishName: "Side Plank", description: "Планк на страна.", note: "Страничен стомак", level: "Среден", sets: 3, reps: "30s", animation: "exercise-anim-core", explanation: "Потпрете се на една подлактица и страната на стапалото, држете го телото исправено, стегнете ги страничните трбушни мускули." },
+                { id: "flutter_kicks", name: "Лепење на нозе", englishName: "Flutter Kicks", description: "Алтернативно подигање на нозе.", note: "Долен стомак", level: "Почетник", sets: 3, reps: "30s", animation: "exercise-anim-core", explanation: "Легнете на грб, алтернативно подигнувајте и спуштајте ги нозете, одржувајќи ги исправени." },
+                { id: "reverse_crunch", name: "Обратен трбушњак", englishName: "Reverse Crunch", description: "Повлекување на колена.", note: "Долен стомак", level: "Почетник", sets: 3, reps: "15-20", animation: "exercise-anim-core", explanation: "Легнете на грб, повлечете ги колената кон градите, подигнувајќи ги колковите од подот." },
+                { id: "v_up", name: "V-подигање", englishName: "V-up", description: "Подигање на труп и нозе.", note: "Цело јадро", level: "Напреден", sets: 3, reps: "12-15", animation: "exercise-anim-core", explanation: "Легнете на грб, истовремено подигнете го трупот и нозете, формирајќи V форма." },
+                { id: "toe_touch", name: "Допир до прсти", englishName: "Toe Touch", description: "Допирање на прсти на нозе.", note: "Горен стомак", level: "Почетник", sets: 3, reps: "15-20", animation: "exercise-anim-core", explanation: "Легнете на грб со исправени нозе, подигнете го трупот и допрете ги прстите на нозете." },
+                { id: "windshield_wiper", name: "Бришачи", englishName: "Windshield Wiper", description: "Ротација на нозе.", note: "Страничен стомак", level: "Напреден", sets: 3, reps: "10-12", animation: "exercise-anim-core", explanation: "Легнете на грб со исправени нозе нагоре, ротирајте ги нозете од една на друга страна." },
+                { id: "dead_bug", name: "Мртва бубачка", englishName: "Dead Bug", description: "Координација на раце и нозе.", note: "Стабилност", level: "Почетник", sets: 3, reps: "12-15", animation: "exercise-anim-core", explanation: "Легнете на грб, истовремено исправете ја едната рака и спротивната нога, вратете се и повторете." },
+                { id: "bird_dog", name: "Птица-куче", englishName: "Bird Dog", description: "Истегнување на рака и нога.", note: "Стабилност", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-core", explanation: "Ставете се на шест точки, истовремено исправете ја едната рака и спротивната нога, вратете се и повторете." },
+                { id: "cable_crunch", name: "Трбушњак на кабл", englishName: "Cable Crunch", description: "Трбушњак со додадена тежина.", note: "Отпор", level: "Среден", sets: 3, reps: "15-20", animation: "exercise-anim-core", explanation: "Клекнете пред кабел машина, повлечете ја тежината надолу со употреба на трбушните мускули." },
+                { id: "lying_leg_raise", name: "Лежечко подигање", englishName: "Lying Leg Raise", description: "Подигање на нозе лежејќи.", note: "Долен стомак", level: "Почетник", sets: 3, reps: "15-20", animation: "exercise-anim-core", explanation: "Легнете на грб, подигнете ги нозете нагоре додека не се нормални на подот, спуштете ги контролирано." },
+                { id: "heel_taps", name: "Допирање на пети", englishName: "Heel Taps", description: "Допирање на пети настрана.", note: "Страничен стомак", level: "Почетник", sets: 3, reps: "20-30", animation: "exercise-anim-core", explanation: "Легнете на грб со свиткани колена, допрете ги петите настрана, активирајќи ги страничните трбушни мускули." },
+                { id: "scissor_kicks", name: "Ножици", englishName: "Scissor Kicks", description: "Вкрстување на нозе.", note: "Долен стомак", level: "Почетник", sets: 3, reps: "30s", animation: "exercise-anim-core", explanation: "Легнете на грб, алтернативно вкрстувајте ги нозете, како ножици." },
+                { id: "hollow_hold", name: "Шупливо држење", englishName: "Hollow Hold", description: "Статичко држење во шуплива форма.", note: "Цело јадро", level: "Среден", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Легнете на грб, подигнете ги рацете и нозете од подот, формирајќи шуплива форма, држете ја позицијата." },
+                { id: "jackknife", name: "Џек-нож", englishName: "Jackknife", description: "Симултано подигање на труп и нозе.", note: "Цело јадро", level: "Среден", sets: 3, reps: "12-15", animation: "exercise-anim-core", explanation: "Легнете на грб, истовремено подигнете го трупот и нозете, допирајќи ги прстите на нозете." },
+                { id: "rollout", name: "Истоварување", englishName: "Rollout", description: "Истоварување со тркало.", note: "Напредно", level: "Напреден", sets: 3, reps: "8-10", animation: "exercise-anim-core", explanation: "Користете тркало за стомак, истоварете се напред додека не почувствувате истегнување, вратете се." },
+                { id: "side_crunch", name: "Страничен трбушњак", englishName: "Side Crunch", description: "Трбушњак на страна.", note: "Страничен стомак", level: "Среден", sets: 3, reps: "15-20", animation: "exercise-anim-core", explanation: "Легнете на страна, подигнете го трупот настрана, стегнувајќи ги страничните трбушни мускули." }
+            ],
+            "Кардио": [
+                { id: "running", name: "Трчање", englishName: "Running", description: "Трчање на отворено или трчалка.", note: "Кардио издржливост", level: "Почетник", sets: 1, reps: "20-30min", animation: "exercise-anim-cardio", explanation: "Започнете со лесна прошетка, постепено зголемувајќи ја брзината до трчање, одржувајте го темпото кое ви овозможува да зборувате, но не и да пеете." },
+                { id: "cycling", name: "Велосипедизам", englishName: "Cycling", description: "Велосипедизам на отворено или стационарен.", note: "Нозе и кардио", level: "Почетник", sets: 1, reps: "30-45min", animation: "exercise-anim-cardio", explanation: "Поставете ја висината на седлото така што коленото да е малку свиткано на дното, одржувајте постојана брзина." },
+                { id: "jump_rope", name: "Скокање на јаже", englishName: "Jump Rope", description: "Скокање на јаже.", note: "Координација", level: "Среден", sets: 5, reps: "1-2min", animation: "exercise-anim-cardio", explanation: "Држете ги лактите блиску до телото, ротирајте го јажето со зглобовите, скокајте на прсти." },
+                { id: "burpees", name: "Бурпис", englishName: "Burpees", description: "Целосна вежба за телото.", note: "Висок интензитет", level: "Напреден", sets: 4, reps: "10-15", animation: "exercise-anim-cardio", explanation: "Стојте, спуштете се во склек, ставете ги рацете на подот, скокнете со нозете назад, направете склек, скокнете со нозете напред, скокнете нагоре." },
+                { id: "mountain_climbers", name: "Планинари", englishName: "Mountain Climbers", description: "Брзо повлекување на нозе.", note: "Јадро и кардио", level: "Среден", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Ставете се во положба на склек, алтернативно брзо повлекувајте ги колената кон градите." },
+                { id: "jumping_jacks", name: "Скокачки џемпери", englishName: "Jumping Jacks", description: "Скокање со раширени раце и нозе.", note: "Загревање", level: "Почетник", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Стојте, скокнете со раширени нозе и подигнати раце, вратете се во почетна положба." },
+                { id: "high_knees", name: "Високи колена", englishName: "High Knees", description: "Трчање на место со високи колена.", note: "Кардио и нозе", level: "Почетник", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Трчајте на место, подигнувајќи ги колената високо кон градите." },
+                { id: "butt_kicks", name: "Удари со задник", englishName: "Butt Kicks", description: "Трчање со допирање на петите.", note: "Загревање", level: "Почетник", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Трчајте на место, допирајќи ги петите до задникот." },
+                { id: "box_jumps", name: "Скокови на кутија", englishName: "Box Jumps", description: "Скокови на платформа.", note: "Експлозивност", level: "Напреден", sets: 4, reps: "10-12", animation: "exercise-anim-cardio", explanation: "Стојте пред кутија, замавете се со раце и скокнете со двете нозе на кутијата, слетајте мекно." },
+                { id: "sprints", name: "Спринтови", englishName: "Sprints", description: "Кратки спринтови.", note: "Брзина", level: "Напреден", sets: 6, reps: "20-30s", animation: "exercise-anim-cardio", explanation: "Трчајте со максимална брзина на кратки растојанија, одмор помеѓу секој спринт." },
+                { id: "rowing", name: "Веслање", englishName: "Rowing", description: "Веслање на машина.", note: "Цело тело", level: "Среден", sets: 1, reps: "15-20min", animation: "exercise-anim-cardio", explanation: "Седнете на веслачката машина, повлечете ја рачката кон стомакот, вратете се контролирано." },
+                { id: "elliptical", name: "Елиптичен тренажер", englishName: "Elliptical", description: "Вежбање на елиптичен тренажер.", note: "Мало влијание", level: "Почетник", sets: 1, reps: "20-30min", animation: "exercise-anim-cardio", explanation: "Седнете на елиптичниот тренажер, одржувајте постојан темпо, фокусирајќи се на целото тело." },
+                { id: "stair_climber", name: "Пењач по скали", englishName: "Stair Climber", description: "Пењање по скали на машина.", note: "Нозе и кардио", level: "Среден", sets: 1, reps: "15-20min", animation: "exercise-anim-cardio", explanation: "Седнете на машината, пењајте по скали со постојан темпо." },
+                { id: "battle_ropes", name: "Борбени јажиња", englishName: "Battle Ropes", description: "Тресење на тешки јажиња.", note: "Горно тело и кардио", level: "Среден", sets: 5, reps: "30s", animation: "exercise-anim-cardio", explanation: "Држете ги краевите на јажињата, тресете ги нагоре и надолу со алтернативни движења." },
+                { id: "kettlebell_swings", name: "Замави со котленче", englishName: "Kettlebell Swings", description: "Замави со котленче.", note: "Задна ложа и кардио", level: "Напреден", sets: 4, reps: "15-20", animation: "exercise-anim-cardio", explanation: "Држете котленче со двете раце, замавете го помеѓу нозете, потиснете го напред со колковите." },
+                { id: "shadow_boxing", name: "Сенка борење", englishName: "Shadow Boxing", description: "Борење со сенка.", note: "Координација", level: "Почетник", sets: 4, reps: "2-3min", animation: "exercise-anim-cardio", explanation: "Симулирајте борење со вообичаени удари, одржувајќи постојано движење." },
+                { id: "jump_squats", name: "Скок чучања", englishName: "Jump Squats", description: "Чучање со скок.", note: "Плиометрика", level: "Напреден", sets: 4, reps: "12-15", animation: "exercise-anim-cardio", explanation: "Направете чучање, потоа експлозивно скокнете нагоре, слетајте мекно и веднаш повторете." },
+                { id: "skater_jumps", name: "Скокачки лизгачи", englishName: "Skater Jumps", description: "Скокови настрана.", note: "Странична подвижност", level: "Среден", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Скокнете настрана со една нога, допрете ја другата нога зад себе, скокнете на другата страна." },
+                { id: "bear_crawls", name: "Лазење како мечка", englishName: "Bear Crawls", description: "Лазење на раце и нозе.", note: "Јадро и кардио", level: "Среден", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Ставете се на раце и нозе, лазете напред и назад, одржувајќи ги колковите ниски." },
+                { id: "inchworms", name: "Инч црви", englishName: "Inchworms", description: "Лазење напред и назад.", note: "Истегнување и кардио", level: "Почетник", sets: 4, reps: "8-10", animation: "exercise-anim-cardio", explanation: "Стојте, наведнете се и допрете ги рацете на подот, лазете напред со раце до склек, потоа лазете назад со нозе." },
+                { id: "tabata", name: "Табата", englishName: "Tabata", description: "Високоинтензивен интервален тренинг.", note: "Максимален интензитет", level: "Напреден", sets: 8, reps: "20s work/10s rest", animation: "exercise-anim-cardio", explanation: "Изберете вежба, работете со максимален интензитет 20 секунди, одморете 10 секунди, повторете 8 пати." },
+                { id: "hill_sprints", name: "Спринтови на рид", englishName: "Hill Sprints", description: "Спринтови на наклон.", note: "Моќ и издржливост", level: "Напреден", sets: 6, reps: "20-30s", animation: "exercise-anim-cardio", explanation: "Најдете рид или наклонета површина, трчајте нагоре со максимален интензитет, одмор при спуштањето." },
+                { id: "double_unders", name: "Двојни скокови", englishName: "Double Unders", description: "Скокање со двојно ротирање на јажето.", note: "Напредно", level: "Напреден", sets: 5, reps: "30s", animation: "exercise-anim-cardio", explanation: "Скокајте повисоко и ротирајте го јажето побрзо за да помине двапати под нозете за еден скок." },
+                { id: "air_bike", name: "Воздушен велосипед", englishName: "Air Bike", description: "Велосипедизам на воздушен велосипед.", note: "Висок интензитет", level: "Среден", sets: 1, reps: "10-20min", animation: "exercise-anim-cardio", explanation: "Користете воздушен велосипед, одржувајќи висок интензитет во текот на вежбањето." }
+            ],
+            "Функционални": [
+                { id: "farmer_walk", name: "Фармерска прошетка", englishName: "Farmer's Walk", description: "Носење тешки тегови.", note: "Стабилност и сила", level: "Среден", sets: 4, reps: "30-50m", animation: "exercise-anim-lift", explanation: "Земете тежок тег во секоја рака, одржувајќи исправен грб, прошетајте определено растојание, фокусирајќи се на стабилноста на трупот." },
+                { id: "kettlebell_swing", name: "Замав со котленче", englishName: "Kettlebell Swing", description: "Хип хинге движење со котленче.", note: "Задна ложа и кардио", level: "Среден", sets: 4, reps: "15-20", animation: "exercise-anim-cardio", explanation: "Држете котленче со двете раце, замавете го помеѓу нозете, потиснете го напред со колковите." },
+                { id: "medicine_ball_slam", name: "Удар со медицинска топка", englishName: "Medicine Ball Slam", description: "Фрлање на топка на под.", note: "Експлозивност", level: "Среден", sets: 4, reps: "12-15", animation: "exercise-anim-cardio", explanation: "Држете медицинска топка над главата, фрлете ја со сила на подот, соберете ја и повторете." },
+                { id: "sandbag_carry", name: "Носење на вреќа", englishName: "Sandbag Carry", description: "Носење вреќа со песок.", note: "Функционална сила", level: "Напреден", sets: 4, reps: "30-50m", animation: "exercise-anim-lift", explanation: "Земете вреќа со песок, носете ја определено растојание, фокусирајќи се на стабилноста и силата." },
+                { id: "turkish_getup", name: "Турско станување", englishName: "Turkish Getup", description: "Станување од под со тежина.", note: "Стабилност и координација", level: "Напреден", sets: 3, reps: "5-8", animation: "exercise-anim-lift", explanation: "Легнете на под со тег во едната рака, станувајте контролирано додека ја држите тежината над вас." },
+                { id: "sledgehammer_strike", name: "Удар со чекан", englishName: "Sledgehammer Strike", description: "Удар на гума со чекан.", note: "Ротациона сила", level: "Среден", sets: 4, reps: "10-12", animation: "exercise-anim-cardio", explanation: "Држете тежок чекан, ударете ја гумата со ротационо движење, алтернирајќи ги страните." },
+                { id: "tire_flip", name: "Превртување на гума", englishName: "Tire Flip", description: "Превртување на тешка гума.", note: "Експлозивна сила", level: "Напреден", sets: 4, reps: "6-8", animation: "exercise-anim-lift", explanation: "Стојте пред тешка гума, фатите ја од дното и превртете ја со експлозивно движење." },
+                { id: "sled_push", name: "Туркање на сандак", englishName: "Sled Push", description: "Туркање на оптоварен сандак.", note: "Нозе и кардио", level: "Напреден", sets: 4, reps: "20-30m", animation: "exercise-anim-cardio", explanation: "Туркајте оптоварен сандак определено растојание, фокусирајќи се на моќта на нозете." },
+                { id: "battle_ropes", name: "Борбени јажиња", englishName: "Battle Ropes", description: "Тресење на тешки јажиња.", note: "Горно тело и кардио", level: "Среден", sets: 4, reps: "30s", animation: "exercise-anim-cardio", explanation: "Држете ги краевите на јажињата, тресете ги нагоре и надолу со алтернативни движења." },
+                { id: "wall_ball", name: "Топка на ѕид", englishName: "Wall Ball", description: "Фрлање на топка кон ѕид.", note: "Цело тело", level: "Среден", sets: 4, reps: "12-15", animation: "exercise-anim-cardio", explanation: "Држете медицинска топка, направете чучање, потоа фрлете ја топката кон ѕидот, фатете ја и повторете." },
+                { id: "overhead_carry", name: "Носење над глава", englishName: "Overhead Carry", description: "Носење тежина над глава.", note: "Стабилност на рамења", level: "Напреден", sets: 4, reps: "20-30m", animation: "exercise-anim-lift", explanation: "Држете тежина над главата со исправени раце, прошетајте определено растојание." },
+                { id: "suitcase_carry", name: "Носење како куфер", englishName: "Suitcase Carry", description: "Носење тежина со една рака.", note: "Странична стабилност", level: "Среден", sets: 4, reps: "20-30m", animation: "exercise-anim-lift", explanation: "Држете тежок тег во една рака, прошетајте определено растојание, фокусирајќи се на страничната стабилност." },
+                { id: "log_press", name: "Потисок со трупец", englishName: "Log Press", description: "Потисок со специјална шипка.", note: "Функционална сила", level: "Напреден", sets: 4, reps: "5-8", animation: "exercise-anim-lift", explanation: "Користете специјална шипка за потисок над главата, симулирајќи кревање на тешки предмети." },
+                { id: "yoke_walk", name: "Носење на јарем", englishName: "Yoke Walk", description: "Носење на јарем со тежина.", note: "Целосна сила", level: "Напреден", sets: 4, reps: "20-30m", animation: "exercise-anim-lift", explanation: "Ставете јарем на грб, носете ја тежината определено растојание." }
+            ],
+            "Истегнување": [
+                { id: "cat_cow", name: "Мачка-крава", englishName: "Cat-Cow Stretch", description: "Истегнување на грбот.", note: "Флексибилност на грб", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-core", explanation: "Ставете се на шест точки, вдишете и спуштете го стомакот кон подот (крава), издишете и заоблете го грбот кон таванот (мачка), повторувајте бавно." },
+                { id: "child_pose", name: "Поза на дете", englishName: "Child's Pose", description: "Истегнување на грб и рамења.", note: "Релаксација", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Седнете на петите, наведнете се напред и ставете го челото на подот, испружете ги рацете напред." },
+                { id: "downward_dog", name: "Пес со глава надолу", englishName: "Downward Dog", description: "Истегнување на задните нозе и грб.", note: "Цело тело", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Ставете се во положба на склек, подигнете ги колковите нагоре, формирајќи инверзна V форма." },
+                { id: "pigeon_pose", name: "Поза на гулаб", englishName: "Pigeon Pose", description: "Истегнување на колковите.", note: "Флексибилност на колкови", level: "Среден", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Ставете се на шест точки, доведете едно колено кон раката, исправете ја другата нога назад." },
+                { id: "hamstring_stretch", name: "Истегнување на задна ложа", englishName: "Hamstring Stretch", description: "Истегнување на задните нозе.", note: "Флексибилност на нозе", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Седнете на под со исправени нозе, наведнете се напред и допрете ги прстите на нозете." },
+                { id: "quad_stretch", name: "Истегнување на квадрицепси", englishName: "Quad Stretch", description: "Истегнување на предните нозе.", note: "Флексибилност на нозе", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Стојте, свијте ја едната нога и фатите ја петата, повлечете ја кон задникот." },
+                { id: "hip_flexor_stretch", name: "Истегнување на колкови", englishName: "Hip Flexor Stretch", description: "Истегнување на предните колкови.", note: "Флексибилност на колкови", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Стојте во исчекор, спуштете го задното колено на подот, чувствувајќи го истегнувањето во предниот колк." },
+                { id: "thoracic_rotation", name: "Ротација на граден дел", englishName: "Thoracic Rotation", description: "Ротација на горниот грб.", note: "Мобилност на грб", level: "Почетник", sets: 3, reps: "10-12", animation: "exercise-anim-core", explanation: "Седнете или стојте, ротирајте го горниот дел од грбот од една на друга страна." },
+                { id: "shoulder_stretch", name: "Истегнување на рамења", englishName: "Shoulder Stretch", description: "Истегнување на рамењата.", note: "Флексибилност на рамења", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Држете едната рака преку градите, притиснете ја со другата рака, чувствувајќи го истегнувањето во задниот делтоид." },
+                { id: "cobra_pose", name: "Поза на кобра", englishName: "Cobra Pose", description: "Истегнување на стомак и грб.", note: "Флексибилност на грб", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Легнете на стомак, ставете ги рацете под рамењата, подигнете го горниот дел од телото." },
+                { id: "butterfly_stretch", name: "Истегнување пеперутка", englishName: "Butterfly Stretch", description: "Истегнување на внатрешните нозе.", note: "Флексибилност на колкови", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Седнете, ставете ги стапалата заедно, притиснете ги колената надолу." },
+                { id: "seated_forward_fold", name: "Седечко наведнување", englishName: "Seated Forward Fold", description: "Истегнување на задна ложа и грб.", note: "Флексибилност", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Седнете со исправени нозе, наведнете се напред и допрете ги прстите на нозете." },
+                { id: "standing_hamstring_stretch", name: "Стоечко истегнување на задна ложа", englishName: "Standing Hamstring Stretch", description: "Истегнување на задните нозе стоејќи.", note: "Флексибилност на нозе", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Стојте, ставете една нога напред, наведнете се и допрете ги прстите на нозете." },
+                { id: "lat_stretch", name: "Истегнување на латови", englishName: "Lat Stretch", description: "Истегнување на грб.", note: "Флексибилност на грб", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Држете се за потпора, наведнете се напред, чувствувајќи го истегнувањето на латовите." },
+                { id: "tricep_stretch", name: "Истегнување на трицепс", englishName: "Tricep Stretch", description: "Истегнување на задната страна на рацете.", note: "Флексибилност на рацете", level: "Почетник", sets: 3, reps: "30-60s", animation: "exercise-anim-core", explanation: "Подигнете една рака над главата, свијте го лактот, притиснете го со другата рака." }
+            ]
+        };
+
+        // APP STATE
+        const appState = {
+            currentRoutine: [],
+            savedRoutines: JSON.parse(localStorage.getItem('myfit-routines')) || [],
+            favorites: JSON.parse(localStorage.getItem('myfit-favorites')) || [],
+            scheduledWorkouts: JSON.parse(localStorage.getItem('myfit-scheduled-workouts')) || {},
+            activeTab: 'planner',
+            calendar: {
+                currentDate: new Date(),
+                selectedDate: null
+            }
+        };
+
+        // DOM ELEMENTS
+        const elements = {
+            loading: document.getElementById('loading'),
+            appContent: document.getElementById('app-content'),
+            activeExercises: document.getElementById('active-exercises'),
+            exercisesCount: document.getElementById('exercises-count'),
+            totalExercises: document.getElementById('total-exercises'),
+            favoritesCount: document.getElementById('favorites-count'),
+            exercisesContainer: document.getElementById('exercises-container'),
+            favoritesList: document.getElementById('favorites-list'),
+            currentRoutine: document.getElementById('current-routine'),
+            routineName: document.getElementById('routine-name'),
+            saveRoutine: document.getElementById('save-routine'),
+            routinesList: document.getElementById('routines-list'),
+            categoryFilter: document.getElementById('category-filter'),
+            levelFilter: document.getElementById('level-filter'),
+            // Calendar elements
+            calendar: document.getElementById('calendar'),
+            currentMonth: document.getElementById('current-month'),
+            prevMonth: document.getElementById('prev-month'),
+            nextMonth: document.getElementById('next-month'),
+            selectedDayTitle: document.getElementById('selected-day-title'),
+            dayWorkoutsList: document.getElementById('day-workouts-list'),
+            addWorkoutSection: document.getElementById('add-workout-section'),
+            workoutSelect: document.getElementById('workout-select'),
+            addWorkoutToDay: document.getElementById('add-workout-to-day')
+        };
+
+        // INITIALIZE APP
+        function initApp() {
+            // Simulate loading
+            setTimeout(() => {
+                elements.loading.style.display = 'none';
+                elements.appContent.style.display = 'block';
+                renderExercises();
+                renderCalendar();
+                updateUI();
+                setupEventListeners();
+            }, 1500);
+        }
+
+        // SETUP EVENT LISTENERS
+        function setupEventListeners() {
+            // Tab navigation
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tab = btn.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+
+            // Filters
+            elements.categoryFilter.addEventListener('change', renderExercises);
+            elements.levelFilter.addEventListener('change', renderExercises);
+
+            // Save routine
+            elements.saveRoutine.addEventListener('click', saveRoutine);
+
+            // Calendar navigation
+            elements.prevMonth.addEventListener('click', () => {
+                appState.calendar.currentDate.setMonth(appState.calendar.currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+
+            elements.nextMonth.addEventListener('click', () => {
+                appState.calendar.currentDate.setMonth(appState.calendar.currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+            // Add workout to day
+            elements.addWorkoutToDay.addEventListener('click', addWorkoutToSelectedDay);
+        }
+
+        // SWITCH TAB
+        function switchTab(tab) {
+            // Update active tab button
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active-tab');
+
+            // Update active tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('active-content');
+            });
+            document.querySelector(`[data-tab-target="${tab}"]`).classList.remove('hidden');
+            document.querySelector(`[data-tab-target="${tab}"]`).classList.add('active-content');
+
+            // Update app state
+            appState.activeTab = tab;
+
+            // Render specific content
+            if (tab === 'favorites') {
+                renderFavorites();
+            } else if (tab === 'planner') {
+                renderSavedRoutines();
+            } else if (tab === 'calendar') {
+                renderCalendar();
+                populateWorkoutSelect();
+            }
+        }
+
+        // RENDER EXERCISES
+        function renderExercises() {
+            const categoryFilter = elements.categoryFilter.value;
+            const levelFilter = elements.levelFilter.value;
+            
+            let allExercises = [];
+            
+            // Collect all exercises based on filters
+            Object.keys(exercisesDatabase).forEach(category => {
+                if (categoryFilter === 'all' || categoryFilter === category) {
+                    exercisesDatabase[category].forEach(exercise => {
+                        if (levelFilter === 'all' || levelFilter === exercise.level) {
+                            allExercises.push({...exercise, category});
+                        }
+                    });
+                }
+            });
+
+            // Update exercise count
+            elements.exercisesCount.textContent = allExercises.length;
+            elements.totalExercises.textContent = `(${allExercises.length} вежби)`;
+
+            // Clear container
+            elements.exercisesContainer.innerHTML = '';
+
+            // Render exercises
+            allExercises.forEach(exercise => {
+                const isFavorite = appState.favorites.includes(exercise.id);
+                const exerciseCard = createExerciseCard(exercise, isFavorite);
+                elements.exercisesContainer.appendChild(exerciseCard);
+            });
+        }
+
+        // CREATE EXERCISE CARD
+        function createExerciseCard(exercise, isFavorite) {
+            const card = document.createElement('div');
+            card.className = 'exercise-card glass-card rounded-xl p-4 border border-white/20';
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="exercise-icon ${exercise.animation}">
+                            ${getExerciseIcon(exercise.category)}
+                        </div>
+                        <div>
+                            <div class="exercise-name">${exercise.name}</div>
+                            <div class="english-name">${exercise.englishName}</div>
+                        </div>
+                    </div>
+                    <button class="favorite-btn p-2 rounded-full hover:bg-yellow-100 transition-colors" data-id="${exercise.id}">
+                        ${isFavorite ? '⭐' : '☆'}
+                    </button>
+                </div>
+                
+                <div class="flex justify-between items-center mb-3">
+                    <span class="level-tag level-${getLevelClass(exercise.level)}">${exercise.level}</span>
+                    <span class="text-sm text-gray-600">${exercise.sets} x ${exercise.reps}</span>
+                </div>
+                
+                <p class="text-gray-700 mb-3">${exercise.description}</p>
+                
+                <div class="explanation-box">
+                    <div class="explanation-title">
+                        <span>💡</span>
+                        Како правилно да ја изведувате вежбата:
+                    </div>
+                    <p class="text-gray-700">${exercise.explanation}</p>
+                </div>
+                
+                <div class="mt-4 flex gap-2">
+                    <button class="add-to-routine-btn flex-1 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors" data-id="${exercise.id}">
+                        Додај во тренинг
+                    </button>
+                </div>
+            `;
+
+            // Add event listeners
+            card.querySelector('.favorite-btn').addEventListener('click', toggleFavorite);
+            card.querySelector('.add-to-routine-btn').addEventListener('click', addToRoutine);
+
+            return card;
+        }
+
+        // GET EXERCISE ICON
+        function getExerciseIcon(category) {
+            const icons = {
+                'Нозе': '🦵',
+                'Грб': '🎯',
+                'Гради': '💪',
+                'Рамења': '🆙',
+                'Раце': '💪',
+                'Стомак': '🪵',
+                'Кардио': '🏃',
+                'Функционални': '🔄',
+                'Истегнување': '🧘'
+            };
+            return icons[category] || '💪';
+        }
+
+        // GET LEVEL CLASS
+        function getLevelClass(level) {
+            const classes = {
+                'Почетник': 'beginner',
+                'Среден': 'intermediate',
+                'Напреден': 'advanced'
+            };
+            return classes[level] || 'beginner';
+        }
+
+        // TOGGLE FAVORITE
+        function toggleFavorite(e) {
+            const exerciseId = e.target.dataset.id;
+            const index = appState.favorites.indexOf(exerciseId);
+            
+            if (index > -1) {
+                appState.favorites.splice(index, 1);
+                e.target.textContent = '☆';
+            } else {
+                appState.favorites.push(exerciseId);
+                e.target.textContent = '⭐';
+            }
+            
+            localStorage.setItem('myfit-favorites', JSON.stringify(appState.favorites));
+            updateUI();
+            
+            // If we're on the favorites tab, re-render
+            if (appState.activeTab === 'favorites') {
+                renderFavorites();
+            }
+        }
+
+        // ADD TO ROUTINE
+        function addToRoutine(e) {
+            const exerciseId = e.target.dataset.id;
+            
+            // Find the exercise
+            let exercise = null;
+            Object.keys(exercisesDatabase).forEach(category => {
+                exercisesDatabase[category].forEach(ex => {
+                    if (ex.id === exerciseId) {
+                        exercise = {...ex, category};
+                    }
+                });
+            });
+            
+            if (exercise) {
+                // Check if already in routine
+                const exists = appState.currentRoutine.some(item => item.id === exerciseId);
+                if (!exists) {
+                    appState.currentRoutine.push(exercise);
+                    renderCurrentRoutine();
+                    updateUI();
+                    
+                    // Show success message
+                    showNotification(`Додадена "${exercise.name}" во тренингот`, 'success');
+                } else {
+                    showNotification(`"${exercise.name}" е веќе во тренингот`, 'warning');
+                }
+            }
+        }
+
+        // RENDER CURRENT ROUTINE
+        function renderCurrentRoutine() {
+            if (appState.currentRoutine.length === 0) {
+                elements.currentRoutine.innerHTML = '<p class="text-gray-500 text-center py-8">🎯 Додај вежби од табот "Вежби" за да започнеш</p>';
+                return;
+            }
+            
+            let html = '<div class="space-y-3">';
+            appState.currentRoutine.forEach((exercise, index) => {
+                html += `
+                    <div class="flex justify-between items-center p-3 bg-white/70 rounded-lg border border-white/30">
+                        <div class="flex items-center gap-3">
+                            <div class="exercise-icon ${exercise.animation}">
+                                ${getExerciseIcon(exercise.category)}
+                            </div>
+                            <div>
+                                <div class="font-semibold">${exercise.name}</div>
+                                <div class="text-sm text-gray-600">${exercise.sets} x ${exercise.reps}</div>
+                            </div>
+                        </div>
+                        <button class="remove-from-routine-btn p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors" data-index="${index}">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            elements.currentRoutine.innerHTML = html;
+            
+            // Add event listeners for remove buttons
+            elements.currentRoutine.querySelectorAll('.remove-from-routine-btn').forEach(btn => {
+                btn.addEventListener('click', removeFromRoutine);
+            });
+        }
+
+        // REMOVE FROM ROUTINE
+        function removeFromRoutine(e) {
+            const index = parseInt(e.target.dataset.index);
+            const removedExercise = appState.currentRoutine[index];
+            
+            appState.currentRoutine.splice(index, 1);
+            renderCurrentRoutine();
+            updateUI();
+            
+            showNotification(`Отстранета "${removedExercise.name}" од тренингот`, 'info');
+        }
+
+        // SAVE ROUTINE
+        function saveRoutine() {
+            const name = elements.routineName.value.trim();
+            
+            if (!name) {
+                showNotification('Внесете име за тренингот', 'error');
+                return;
+            }
+            
+            if (appState.currentRoutine.length === 0) {
+                showNotification('Додајте вежби во тренингот пред да зачувате', 'error');
+                return;
+            }
+            
+            const routine = {
+                id: Date.now().toString(),
+                name: name,
+                exercises: [...appState.currentRoutine],
+                createdAt: new Date().toISOString()
+            };
+            
+            appState.savedRoutines.push(routine);
+            localStorage.setItem('myfit-routines', JSON.stringify(appState.savedRoutines));
+            
+            // Reset current routine
+            appState.currentRoutine = [];
+            elements.routineName.value = '';
+            renderCurrentRoutine();
+            renderSavedRoutines();
+            updateUI();
+            
+            showNotification(`Тренингот "${name}" е зачуван!`, 'success');
+        }
+
+        // RENDER SAVED ROUTINES
+        function renderSavedRoutines() {
+            if (appState.savedRoutines.length === 0) {
+                elements.routinesList.innerHTML = '<p class="text-gray-500 text-center py-8">📝 Сè уште немате зачувано тренинзи</p>';
+                return;
+            }
+            
+            let html = '';
+            appState.savedRoutines.forEach(routine => {
+                html += `
+                    <div class="p-4 bg-white/70 rounded-xl border border-white/30">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-bold text-lg">${routine.name}</h3>
+                            <div class="flex gap-2">
+                                <button class="load-routine-btn p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors" data-id="${routine.id}">
+                                    📥 Вчитај
+                                </button>
+                                <button class="delete-routine-btn p-2 text-red-500 hover:bg-red-100 rounded-lg transition-colors" data-id="${routine.id}">
+                                    🗑️ Избриши
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-3">
+                            ${routine.exercises.length} вежби • Создаден на ${new Date(routine.createdAt).toLocaleDateString('mk-MK')}
+                        </div>
+                        <div class="space-y-2">
+                            ${routine.exercises.map(exercise => `
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="exercise-icon-small">${getExerciseIcon(exercise.category)}</span>
+                                    <span>${exercise.name}</span>
+                                    <span class="text-gray-500">(${exercise.sets} x ${exercise.reps})</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            elements.routinesList.innerHTML = html;
+            
+            // Add event listeners
+            elements.routinesList.querySelectorAll('.load-routine-btn').forEach(btn => {
+                btn.addEventListener('click', loadRoutine);
+            });
+            
+            elements.routinesList.querySelectorAll('.delete-routine-btn').forEach(btn => {
+                btn.addEventListener('click', deleteRoutine);
+            });
+        }
+
+        // LOAD ROUTINE
+        function loadRoutine(e) {
+            const routineId = e.target.dataset.id;
+            const routine = appState.savedRoutines.find(r => r.id === routineId);
+            
+            if (routine) {
+                appState.currentRoutine = [...routine.exercises];
+                elements.routineName.value = `${routine.name} (Копија)`;
+                renderCurrentRoutine();
+                updateUI();
+                
+                showNotification(`Тренингот "${routine.name}" е вчитан!`, 'success');
+            }
+        }
+
+        // DELETE ROUTINE
+        function deleteRoutine(e) {
+            const routineId = e.target.dataset.id;
+            const routineIndex = appState.savedRoutines.findIndex(r => r.id === routineId);
+            
+            if (routineIndex > -1) {
+                const routineName = appState.savedRoutines[routineIndex].name;
+                appState.savedRoutines.splice(routineIndex, 1);
+                localStorage.setItem('myfit-routines', JSON.stringify(appState.savedRoutines));
+                renderSavedRoutines();
+                
+                showNotification(`Тренингот "${routineName}" е избришан`, 'info');
+            }
+        }
+
+        // RENDER FAVORITES
+        function renderFavorites() {
+            if (appState.favorites.length === 0) {
+                elements.favoritesList.innerHTML = `
+                    <p class="text-gray-500 text-center py-12">
+                        <span class="text-4xl mb-4 block">🌟</span>
+                        Сè уште немате омилени вежби<br>
+                        <span class="text-sm text-gray-400">Кликнете на ⭐ покрај вежбите за да додадете</span>
+                    </p>
+                `;
+                return;
+            }
+            
+            let html = '';
+            appState.favorites.forEach(favoriteId => {
+                // Find the exercise
+                let exercise = null;
+                Object.keys(exercisesDatabase).forEach(category => {
+                    exercisesDatabase[category].forEach(ex => {
+                        if (ex.id === favoriteId) {
+                            exercise = {...ex, category};
+                        }
+                    });
+                });
+                
+                if (exercise) {
+                    html += `
+                        <div class="exercise-card glass-card rounded-xl p-4 border border-white/20">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="exercise-icon ${exercise.animation}">
+                                        ${getExerciseIcon(exercise.category)}
+                                    </div>
+                                    <div>
+                                        <div class="exercise-name">${exercise.name}</div>
+                                        <div class="english-name">${exercise.englishName}</div>
+                                    </div>
+                                </div>
+                                <button class="favorite-btn p-2 rounded-full hover:bg-yellow-100 transition-colors" data-id="${exercise.id}">
+                                    ⭐
+                                </button>
+                            </div>
+                            
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="level-tag level-${getLevelClass(exercise.level)}">${exercise.level}</span>
+                                <span class="text-sm text-gray-600">${exercise.sets} x ${exercise.reps}</span>
+                            </div>
+                            
+                            <p class="text-gray-700 mb-3">${exercise.description}</p>
+                            
+                            <div class="mt-4 flex gap-2">
+                                <button class="add-to-routine-btn flex-1 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors" data-id="${exercise.id}">
+                                    Додај во тренинг
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            elements.favoritesList.innerHTML = html;
+            
+            // Add event listeners
+            elements.favoritesList.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', toggleFavorite);
+            });
+            
+            elements.favoritesList.querySelectorAll('.add-to-routine-btn').forEach(btn => {
+                btn.addEventListener('click', addToRoutine);
+            });
+        }
+
+        // RENDER CALENDAR
+        function renderCalendar() {
+            const currentDate = appState.calendar.currentDate;
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            // Update month display
+            const monthNames = ["Јануари", "Февруари", "Март", "Април", "Мај", "Јуни", 
+                               "Јули", "Август", "Септември", "Октомври", "Ноември", "Декември"];
+            elements.currentMonth.textContent = `${monthNames[month]} ${year}`;
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
+            let firstDayOfWeek = firstDay.getDay();
+            // Adjust for Macedonian calendar (Monday is first day)
+            firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+            
+            // Clear calendar
+            elements.calendar.innerHTML = '';
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const prevMonthDay = new Date(year, month, -i);
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day other-month';
+                dayElement.innerHTML = `
+                    <div class="calendar-day-number">${prevMonthDay.getDate()}</div>
+                `;
+                elements.calendar.appendChild(dayElement);
+            }
+            
+            // Add cells for each day of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateString = date.toISOString().split('T')[0];
+                const hasWorkout = appState.scheduledWorkouts[dateString];
+                const isSelected = appState.calendar.selectedDate === dateString;
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = `calendar-day ${hasWorkout ? 'has-workout' : ''} ${isSelected ? 'selected' : ''}`;
+                dayElement.dataset.date = dateString;
+                dayElement.innerHTML = `
+                    <div class="calendar-day-number">${day}</div>
+                    ${hasWorkout ? '<div class="calendar-workout-indicator"></div>' : ''}
+                `;
+                
+                dayElement.addEventListener('click', () => selectDate(dateString));
+                elements.calendar.appendChild(dayElement);
+            }
+            
+            // Update selected day display if a date is selected
+            if (appState.calendar.selectedDate) {
+                updateSelectedDayDisplay();
+            }
+        }
+
+        // SELECT DATE
+        function selectDate(dateString) {
+            appState.calendar.selectedDate = dateString;
+            renderCalendar();
+            updateSelectedDayDisplay();
+            elements.addWorkoutSection.style.display = 'block';
+        }
+
+        // UPDATE SELECTED DAY DISPLAY
+        function updateSelectedDayDisplay() {
+            if (!appState.calendar.selectedDate) return;
+            
+            const date = new Date(appState.calendar.selectedDate);
+            const dateString = appState.calendar.selectedDate;
+            const workouts = appState.scheduledWorkouts[dateString] || [];
+            
+            elements.selectedDayTitle.textContent = `Тренинзи за ${date.toLocaleDateString('mk-MK')}`;
+            
+            if (workouts.length === 0) {
+                elements.dayWorkoutsList.innerHTML = '<p class="text-gray-500 text-center py-4">📅 Нема закажани тренинзи за овој ден</p>';
+            } else {
+                let html = '';
+                workouts.forEach((workout, index) => {
+                    html += `
+                        <div class="flex justify-between items-center p-3 bg-white/70 rounded-lg border border-white/30">
+                            <div>
+                                <div class="font-semibold">${workout.name}</div>
+                                <div class="text-sm text-gray-600">${workout.exercises.length} вежби</div>
+                            </div>
+                            <button class="remove-workout-btn p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors" data-date="${dateString}" data-index="${index}">
+                                🗑️
+                            </button>
+                        </div>
+                    `;
+                });
+                elements.dayWorkoutsList.innerHTML = html;
+                
+                // Add event listeners for remove buttons
+                elements.dayWorkoutsList.querySelectorAll('.remove-workout-btn').forEach(btn => {
+                    btn.addEventListener('click', removeWorkoutFromDay);
+                });
+            }
+        }
+
+        // POPULATE WORKOUT SELECT
+        function populateWorkoutSelect() {
+            elements.workoutSelect.innerHTML = '<option value="">-- Изберете тренинг --</option>';
+            
+            appState.savedRoutines.forEach(routine => {
+                const option = document.createElement('option');
+                option.value = routine.id;
+                option.textContent = `${routine.name} (${routine.exercises.length} вежби)`;
+                elements.workoutSelect.appendChild(option);
+            });
+        }
+
+        // ADD WORKOUT TO SELECTED DAY
+        function addWorkoutToSelectedDay() {
+            if (!appState.calendar.selectedDate) {
+                showNotification('Изберете датум прво', 'error');
+                return;
+            }
+            
+            const routineId = elements.workoutSelect.value;
+            if (!routineId) {
+                showNotification('Изберете тренинг', 'error');
+                return;
+            }
+            
+            const routine = appState.savedRoutines.find(r => r.id === routineId);
+            if (!routine) return;
+            
+            // Initialize workouts array for this date if it doesn't exist
+            if (!appState.scheduledWorkouts[appState.calendar.selectedDate]) {
+                appState.scheduledWorkouts[appState.calendar.selectedDate] = [];
+            }
+            
+            // Check if this routine is already scheduled for this date
+            const alreadyScheduled = appState.scheduledWorkouts[appState.calendar.selectedDate]
+                .some(workout => workout.id === routineId);
+                
+            if (alreadyScheduled) {
+                showNotification('Овој тренинг е веќе закажан за овој ден', 'warning');
+                return;
+            }
+            
+            // Add the workout
+            appState.scheduledWorkouts[appState.calendar.selectedDate].push({
+                id: routineId,
+                name: routine.name,
+                exercises: routine.exercises
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('myfit-scheduled-workouts', JSON.stringify(appState.scheduledWorkouts));
+            
+            // Update UI
+            renderCalendar();
+            updateSelectedDayDisplay();
+            
+            showNotification(`Тренингот "${routine.name}" е закажан!`, 'success');
+            
+            // Reset select
+            elements.workoutSelect.value = '';
+        }
+
+        // REMOVE WORKOUT FROM DAY
+        function removeWorkoutFromDay(e) {
+            const dateString = e.target.dataset.date;
+            const index = parseInt(e.target.dataset.index);
+            
+            if (appState.scheduledWorkouts[dateString]) {
+                const removedWorkout = appState.scheduledWorkouts[dateString][index];
+                appState.scheduledWorkouts[dateString].splice(index, 1);
+                
+                // If no more workouts for this date, remove the date entry
+                if (appState.scheduledWorkouts[dateString].length === 0) {
+                    delete appState.scheduledWorkouts[dateString];
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('myfit-scheduled-workouts', JSON.stringify(appState.scheduledWorkouts));
+                
+                // Update UI
+                renderCalendar();
+                updateSelectedDayDisplay();
+                
+                showNotification(`Тренингот "${removedWorkout.name}" е отстранет`, 'info');
+            }
+        }
+
+        // UPDATE UI
+        function updateUI() {
+            elements.activeExercises.textContent = appState.currentRoutine.length;
+            elements.favoritesCount.textContent = appState.favorites.length;
+            
+            // Calculate total exercises count
+            let totalExercises = 0;
+            Object.keys(exercisesDatabase).forEach(category => {
+                totalExercises += exercisesDatabase[category].length;
+            });
+            elements.exercisesCount.textContent = totalExercises;
+        }
+
+        // SHOW NOTIFICATION
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                type === 'warning' ? 'bg-yellow-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // INITIALIZE APP WHEN DOM IS LOADED
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
