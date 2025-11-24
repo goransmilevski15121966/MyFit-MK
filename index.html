@@ -14,6 +14,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+/* === RESPONSIVE ЛОГО СТИЛОВИ === */
+.app-logo {
+    border-radius: 16px;
+    border: 3px solid #059669;
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: cover;
+    background: white;
+}
+
+/* Големина за десктоп */
+.app-logo.desktop {
+    width: 80px;
+    height: 80px;
+}
+
+/* Големина за таблети */
+@media (max-width: 1024px) {
+    .app-logo.tablet {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* Големина за мобилни */
+@media (max-width: 768px) {
+    .app-logo.mobile {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+    }
+}
+
+/* Големина за мали мобилни */
+@media (max-width: 480px) {
+    .app-logo.small-mobile {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+}
+
+/* Ховер ефекти */
+.app-logo:hover {
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+    border-color: #047857;
+}
+
+/* Лого контејнер */
+.logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.logo-container::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(45deg, #059669, #10b981, #34d399);
+    border-radius: 20px;
+    z-index: -1;
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+}
+
+.logo-container:hover::after {
+    opacity: 0.2;
+}
+
+/* Responsive header */
+@media (max-width: 768px) {
+    .responsive-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .responsive-header h1 {
+        font-size: 1.8rem !important;
+    }
+}
         :root {
             --primary-color: #374151;
             --accent-color: #059669;
@@ -519,30 +605,41 @@
         <!-- Shimmer Effect -->
         <div class="absolute inset-0 shimmer opacity-10"></div>
         
-        <!-- HEADER -->
-        <div class="mb-8 pb-6 border-b border-white/30">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 flex items-center gap-3">
-                        <span class="floating-icon">💪</span>
-                        MyFit MK - Владо Смилевски
-                    </h1>
-                    <p class="mt-2 text-lg sm:text-xl text-gray-600 font-medium">
-                        Твој предизвик - Твојата победа. Јак денес - појак утре.
-                    </p>
-                </div>
-                <div class="hidden sm:flex items-center gap-4">
-                    <div class="text-right">
-                        <div class="text-gray-500 text-sm">Активни вежби</div>
-                        <div class="text-2xl font-bold text-gray-800" id="active-exercises">0</div>
-                    </div>
-                    <div class="h-10 w-px bg-gray-300"></div>
-                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors dark:bg-gray-700 dark:hover:bg-gray-600">
-                        <span class="theme-icon">🌙</span>
-                    </button>
-                </div>
+        <!-- RESPONSIVE HEADER СО ЛОГО -->
+<div class="mb-8 pb-6 border-b border-white/30">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 responsive-header">
+        <div class="flex items-center gap-4">
+            <!-- ЛОГО КОНТЕЈНЕР -->
+            <div class="logo-container">
+                <img src="myfit-logo.jpg" 
+                     alt="MyFit MK Logo" 
+                     class="app-logo desktop tablet mobile small-mobile floating-icon">
+            </div>
+            
+            <!-- ТЕКСТ СОДРЖИНА -->
+            <div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800">
+                    MyFit MK <span class="text-green-600">- Владо Смилевски</span>
+                </h1>
+                <p class="mt-2 text-lg sm:text-xl text-gray-600 font-medium">
+                    Твој предизвик - Твојата победа. Јак денес - појак утре.
+                </p>
             </div>
         </div>
+        
+        <!-- СТАТИСТИКИ -->
+        <div class="flex items-center gap-4">
+            <div class="text-right">
+                <div class="text-gray-500 text-sm">Активни вежби</div>
+                <div class="text-2xl font-bold text-gray-800" id="active-exercises">0</div>
+            </div>
+            <div class="h-10 w-px bg-gray-300"></div>
+            <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors dark:bg-gray-700 dark:hover:bg-gray-600">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </div>
+</div>
 
         <!-- LOADING -->
         <div id="loading" class="text-center py-20">
@@ -836,6 +933,7 @@
                             <div>
                                 <label class="block text-gray-700 mb-2 font-medium">Ниво</label>
                                 <select id="user-level" class="w-full p-3 border-2 border-green-200 rounded-xl focus:border-green-500 transition-all duration-300 bg-white/70">
+				    <option value="all">🎯 Сите Нивоа</option>
                                     <option value="Почетник">🟢 Почетник</option>
                                     <option value="Среден">🟡 Среден</option>
                                     <option value="Напреден">🔴 Напреден</option>
@@ -910,6 +1008,13 @@
                             <p><strong>Креатор:</strong> Владо Смилевски</p>
                             <p><strong>Вежби:</strong> 200+</p>
                             <p><strong>Мото:</strong> Твој предизвик - Твојата победа. Јак денес - појак утре.</p>
+		   <div class="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+           	       <p class="text-gray-700 italic leading-relaxed">
+                          Го создададов MyFit MK со една цел да направам квалитетно фитнес знаење
+                          достапно за секој, верувам дека секој заслужува пристап до безбедни
+                          и ефективни вежби, без оглед на нивото или искуството.
+                      </p>
+                      <p class="text-right text-gray-600 font-semibold mt-2">- Владо Смилевски</p>
                         </div>
                     </div>
                 </div>
@@ -1213,6 +1318,20 @@
             themeToggle: document.getElementById('theme-toggle')
         };
 
+            // RESPONSIVE ЛОГО
+	function updateLogoForScreen() {
+            const logo = document.querySelector('.app-logo');
+            if (!logo) return;
+            const w = window.innerWidth;
+	    logo.classList.remove('small-mobile', 'mobile', 'tablet', 'desktop');
+  	  if (w < 480) logo.classList.add('small-mobile');
+  	  else if (w < 768) logo.classList.add('mobile');
+ 	   else if (w < 1024) logo.classList.add('tablet');
+ 	   else logo.classList.add('desktop');
+}
+window.addEventListener('resize', updateLogoForScreen);
+window.addEventListener('load', updateLogoForScreen);
+
         // INITIALIZE APP
         function initApp() {
             // Simulate loading
@@ -1230,6 +1349,7 @@
                 setupCategoryQuickAccess();
                 renderRecommendedExercises();
                 updateExerciseCount();
+	        updateLogoForScreen();
             }, 1500);
         }
 
@@ -1312,88 +1432,112 @@
             });
         }
 
-        function renderRecommendedExercises() {
-            const userLevel = appState.userProfile.level;
-            const recommendedContainer = elements.recommendedExercises;
+function renderRecommendedExercises() {
+    const userLevel = appState.userProfile.level;
+    const recommendedContainer = elements.recommendedExercises;
+    
+    if (!recommendedContainer) return;
+    
+    let recommendedExercises = [];
+    
+    // Ако корисникот има избрано "Сите нивоа", прикажи разновидни вежби
+    if (userLevel === 'all') {
+        Object.keys(exercisesDatabase).forEach(category => {
+            const categoryExercises = exercisesDatabase[category];
+            const exercisesToAdd = categoryExercises
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 2);
             
-            if (!recommendedContainer) return;
+            recommendedExercises.push(...exercisesToAdd.map(ex => ({...ex, category})));
+        });
+        
+        recommendedExercises = recommendedExercises
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 6);
             
-            let recommendedExercises = [];
-            
-            // Find exercises matching user level
-            Object.keys(exercisesDatabase).forEach(category => {
-                exercisesDatabase[category].forEach(exercise => {
-                    if (exercise.level === userLevel) {
-                        recommendedExercises.push({...exercise, category});
-                    }
-                });
+    } else {
+        // Оригинална логика за специфично ниво
+        Object.keys(exercisesDatabase).forEach(category => {
+            exercisesDatabase[category].forEach(exercise => {
+                if (exercise.level === userLevel) {
+                    recommendedExercises.push({...exercise, category});
+                }
             });
-            
-            // Show maximum 6 recommended exercises
-            recommendedExercises = recommendedExercises.slice(0, 6);
-            
-            if (recommendedExercises.length === 0) {
-                recommendedContainer.style.display = 'none';
-                return;
-            }
-            
-            let html = `
-                <h3 class="text-xl font-bold text-gray-800 mb-4">🎯 Препорачани за вашето ниво (${userLevel})</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            `;
-            
-            recommendedExercises.forEach(exercise => {
-                const isFavorite = appState.favorites.includes(exercise.id);
-                html += `
-                    <div class="exercise-card glass-card rounded-xl p-4 border border-white/30">
-                        <div class="flex justify-between items-start mb-2">
-                            <div class="flex items-center gap-2">
-                                <div class="exercise-icon ${exercise.animation}">
-                                    ${getExerciseIcon(exercise.category)}
-                                </div>
-                                <div>
-                                    <div class="exercise-name text-lg">${exercise.name}</div>
-                                </div>
-                            </div>
-                            <button class="favorite-btn p-1" data-id="${exercise.id}">
-                                ${isFavorite ? '⭐' : '☆'}
-                            </button>
+        });
+        
+        recommendedExercises = recommendedExercises
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 6);
+    }
+    
+    // Прикажи ги препорачаните вежби
+    if (recommendedExercises.length === 0) {
+        recommendedContainer.style.display = 'none';
+        return;
+    }
+    
+    let html = `
+        <h3 class="text-xl font-bold text-gray-800 mb-4">🎯 Препорачани вежби ${
+            userLevel === 'all' ? 'за сите нивоа' : `за вашето ниво (${userLevel})`
+        }</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    `;
+    
+    recommendedExercises.forEach(exercise => {
+        const isFavorite = appState.favorites.includes(exercise.id);
+        html += `
+            <div class="exercise-card glass-card rounded-xl p-4 border border-white/30">
+                <div class="flex justify-between items-start mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="exercise-icon ${exercise.animation}">
+                            ${getExerciseIcon(exercise.category)}
                         </div>
-                        <div class="exercise-rating mb-2">
-                            <span class="text-yellow-400">⭐</span>
-                            <span class="text-sm text-gray-600">${exercise.rating}</span>
-                            <span class="text-sm text-gray-500 ml-1">(${Math.floor(Math.random() * 50) + 10} reviews)</span>
-                        </div>
-                        <div class="text-sm text-gray-600 mb-2">${exercise.sets} x ${exercise.reps}</div>
-                        <div class="exercise-details">
-                            <div class="flex justify-between text-xs">
-                                <span>💪 Тежина:</span>
-                                <span>${exercise.difficulty}</span>
-                            </div>
-                            <div class="flex justify-between text-xs">
-                                <span>⏱ Време:</span>
-                                <span>${exercise.time}</span>
+                        <div>
+                            <div class="exercise-name text-lg">${exercise.name}</div>
+                            <div class="level-tag level-${getLevelClass(exercise.level)} text-xs mt-1">
+                                ${exercise.level}
                             </div>
                         </div>
-                        <button class="add-to-routine-btn w-full py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm mt-3" data-id="${exercise.id}">
-                            Додај во тренинг
-                        </button>
                     </div>
-                `;
-            });
-            
-            html += '</div>';
-            recommendedContainer.innerHTML = html;
-            
-            // Add event listeners
-            recommendedContainer.querySelectorAll('.favorite-btn').forEach(btn => {
-                btn.addEventListener('click', toggleFavorite);
-            });
-            
-            recommendedContainer.querySelectorAll('.add-to-routine-btn').forEach(btn => {
-                btn.addEventListener('click', addToRoutine);
-            });
-        }
+                    <button class="favorite-btn p-1" data-id="${exercise.id}">
+                        ${isFavorite ? '⭐' : '☆'}
+                    </button>
+                </div>
+                <div class="exercise-rating mb-2">
+                    <span class="text-yellow-400">⭐</span>
+                    <span class="text-sm text-gray-600">${exercise.rating}</span>
+                    <span class="text-sm text-gray-500 ml-1">(${Math.floor(Math.random() * 50) + 10} reviews)</span>
+                </div>
+                <div class="text-sm text-gray-600 mb-2">${exercise.sets} x ${exercise.reps}</div>
+                <div class="exercise-details">
+                    <div class="flex justify-between text-xs">
+                        <span>💪 Тежина:</span>
+                        <span>${exercise.difficulty}</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span>⏱ Време:</span>
+                        <span>${exercise.time}</span>
+                    </div>
+                </div>
+                <button class="add-to-routine-btn w-full py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm mt-3" data-id="${exercise.id}">
+                    Додај во тренинг
+                </button>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    recommendedContainer.innerHTML = html;
+    
+    // Додадете event listeners
+    recommendedContainer.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click', toggleFavorite);
+    });
+    
+    recommendedContainer.querySelectorAll('.add-to-routine-btn').forEach(btn => {
+        btn.addEventListener('click', addToRoutine);
+    });
+}
 
         function updateExerciseCount() {
             let totalExercises = 0;
@@ -2229,6 +2373,7 @@
             appState.userProfile.name = elements.userName.value;
             appState.userProfile.level = elements.userLevel.value;
             localStorage.setItem('myfit-profile', JSON.stringify(appState.userProfile));
+	    renderRecommendedExercises();
             showNotification('Профилот е зачуван!', 'success');
         }
 
@@ -2384,6 +2529,47 @@
                 }, 300);
             }, 3000);
         }
+
+// INITIALIZE APP FUNCTION
+function initApp() {
+    try {
+        // Ensure user level has a default value
+        if (!appState.userProfile.level || appState.userProfile.level === 'all') {
+            appState.userProfile.level = 'Почетник';
+            localStorage.setItem('myfit-profile', JSON.stringify(appState.userProfile));
+        }
+        
+        // Simulate loading
+        setTimeout(() => {
+            elements.loading.style.display = 'none';
+            elements.appContent.style.display = 'block';
+            renderExercises();
+            renderCalendar();
+            updateUI();
+            setupEventListeners();
+            loadUserProfile();
+            loadSettings();
+            applyTheme();
+            setupExerciseSearch();
+            setupCategoryQuickAccess();
+            renderRecommendedExercises();
+            updateExerciseCount();
+            updateLogoForScreen();
+        }, 1500);
+    } catch (error) {
+        console.error('Error initializing app:', error);
+        elements.loading.innerHTML = `
+            <div class="text-center py-20 text-red-500">
+                <div class="text-4xl mb-4">⚠️</div>
+                <p class="text-lg font-medium">Грешка при вчитување на апликацијата</p>
+                <p class="text-sm mt-2">Ве молиме освежете ја страницата</p>
+                <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Овлажете страница
+                </button>
+            </div>
+        `;
+    }
+}
 
         // INITIALIZE APP WHEN DOM IS LOADED
         document.addEventListener('DOMContentLoaded', initApp);
